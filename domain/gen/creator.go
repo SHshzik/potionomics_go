@@ -9,21 +9,21 @@ import (
 )
 
 type BitsetCreator struct {
-	Ingredients []domain.Ingredient
-	Capacity    int
+	IngredientsInInventory []domain.Ingredient
+	Capacity               int
 }
 
 func (bc *BitsetCreator) Go() goga.Bitset {
 	b := goga.Bitset{}
-	b.Create(len(bc.Ingredients))
+	b.Create(len(bc.IngredientsInInventory))
 	randomSelectedRows := make([]domain.Ingredient, 0, bc.Capacity)
 	for i := 0; i < bc.Capacity; i++ {
-		randomIndex := rand.Intn(len(bc.Ingredients))
-		randomSelectedRows = append(randomSelectedRows, bc.Ingredients[randomIndex])
+		randomIndex := rand.Intn(len(bc.IngredientsInInventory))
+		randomSelectedRows = append(randomSelectedRows, bc.IngredientsInInventory[randomIndex])
 	}
-	for i := 0; i < len(bc.Ingredients); i++ {
+	for i := 0; i < len(bc.IngredientsInInventory); i++ {
 		result := slices.ContainsFunc(randomSelectedRows, func(r domain.Ingredient) bool {
-			return r == bc.Ingredients[i]
+			return r == bc.IngredientsInInventory[i]
 		})
 		var r int
 		if result {

@@ -2,52 +2,81 @@ package service
 
 import (
 	"github.com/SHshzik/potionomics_go/domain"
+	"github.com/SHshzik/potionomics_go/domain/gen"
+	"github.com/tomcraven/goga"
 )
 
 type App struct {
-	bdPotions     domain.BDPotions
-	bdCauldrons   domain.BDCauldrons
-	bdIngredients domain.BDIngredients
-	// GenAlgo          *goga.GeneticAlgorithm
-	// EliteConsumer    *gen.EliteConsumer
-	// BrewSimulator    *gen.BrewSimulator
-	// PotionsRecords   [][]string
-	// CauldronsRecords [][]string
-	// Ingredients      []domain.Ingredient
+	bdPotions              domain.BDPotions
+	bdCauldrons            domain.BDCauldrons
+	bdIngredients          domain.BDIngredients
+	ingredientsInInventory []domain.Ingredient
 }
 
-func NewApp(bdPotions domain.BDPotions, bdCauldrons domain.BDCauldrons, bdIngredients domain.BDIngredients) *App {
+func NewApp(bdPotions domain.BDPotions, bdCauldrons domain.BDCauldrons, bdIngredients domain.BDIngredients, ingredientsInInventory []domain.Ingredient) *App {
 	return &App{
-		bdPotions:     bdPotions,
-		bdCauldrons:   bdCauldrons,
-		bdIngredients: bdIngredients,
+		bdPotions:              bdPotions,
+		bdCauldrons:            bdCauldrons,
+		bdIngredients:          bdIngredients,
+		ingredientsInInventory: ingredientsInInventory,
 	}
 }
 
 func (s *App) Generate(r domain.GenerateRequest) [][]domain.Ingredient {
-	return [][]domain.Ingredient{}
-	// resultChannel := make(chan string, 10)
-	// s.EliteConsumer.ResultChannel = resultChannel
-	// s.BrewSimulator.ResultChannel = resultChannel
-	// // Move in gui input?
-	// s.GenAlgo.Init(50000, 4)
-	// s.GenAlgo.Simulate()
+	resultChannel := make(chan []domain.Ingredient, 10)
 
-	// top := make([]domain.Ingredient, 0, 10)
+	simulator := &gen.BrewSimulator{
+		IngredientsInInventory: s.ingredientsInInventory,
+		Capacity:               r.Cauldron.Capacity,
+		ResultChannel:          resultChannel,
+	}
+	creator := &gen.BitsetCreator{
+		IngredientsInInventory: s.ingredientsInInventory,
+		Capacity:               r.Cauldron.Capacity,
+	}
+	eliteConsumer := &gen.EliteConsumer{
+		IngredientsInInventory: s.ingredientsInInventory,
+		ResultChannel:          resultChannel,
+	}
 
-	// for r := range resultChannel {
-	// 	if len(top) > 10 {
-	// 		top = top[1:]
-	// 	}
-	// 	top = append(top, s.Ingredients[r])
-	// }
-	// sr := strings.Builder{}
-	// for _, t := range top {
-	// 	sr.WriteString(t)
-	// 	sr.WriteString("<br>")
-	// }
+	genAlgo := goga.NewGeneticAlgorithm()
 
-	// return sr.String()
+	genAlgo.Simulator = simulator
+	genAlgo.BitsetCreate = creator
+	genAlgo.EliteConsumer = eliteConsumer
+
+	// Maybe change.
+	genAlgo.Mater = goga.NewMater(
+		[]goga.MaterFunctionProbability{
+			{P: 1.0, F: goga.TwoPointCrossover},
+			{P: 1.0, F: goga.Mutate},
+			{P: 1.0, F: goga.UniformCrossover, UseElite: true},
+		},
+	)
+
+	// Maybe change.
+	genAlgo.Selector = goga.NewSelector(
+		[]goga.SelectorFunctionProbability{
+			{P: 1.0, F: goga.Roulette},
+		},
+	)
+
+	// Move in gui input?
+	genAlgo.Init(50000, 4)
+	go func() {
+		genAlgo.Simulate()
+	}()
+
+	top := make([][]domain.Ingredient, 0, 10)
+
+	for r := range resultChannel {
+		if len(top) > 10 {
+			top = top[1:]
+		}
+		top = append(top, r)
+	}
+
+	return top
 }
 
 func (s *App) GetPotions() []domain.Potion {

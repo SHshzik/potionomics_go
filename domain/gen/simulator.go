@@ -2,16 +2,15 @@ package gen
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/SHshzik/potionomics_go/domain"
 	"github.com/tomcraven/goga"
 )
 
 type BrewSimulator struct {
-	Ingredients []domain.Ingredient
-	Capacity      int
-	ResultChannel chan string
+	IngredientsInInventory []domain.Ingredient
+	Capacity               int
+	ResultChannel          chan []domain.Ingredient
 }
 
 func (bs *BrewSimulator) OnBeginSimulation() {
@@ -32,7 +31,7 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 	if countOnes(bits) <= bs.Capacity {
 		for i, selected := range bits {
 			if selected == 1 {
-				item := bs.Ingredients[i]
+				item := bs.IngredientsInInventory[i]
 				a += item.A
 				b += item.B
 				c += item.C
@@ -46,6 +45,7 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 		mixins := calculateMixins(a, b, c, d, e, maxA, maxB, maxC, maxD, maxE)
 		if weight > 0 {
 			valueF := float64(value) * (1 - (float64(mixins) / float64(weight)))
+
 			if (maxA > 0 && a > maxA) ||
 				(maxB > 0 && b > maxB) ||
 				(maxC > 0 && c > maxC) ||
@@ -69,10 +69,10 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 }
 
 func (bs *BrewSimulator) ExitFunc(g goga.Genome) bool {
-	if g.GetFitness() > 130 {
+	if g.GetFitness() > 100 {
 		close(bs.ResultChannel)
 	}
-	return g.GetFitness() > 130
+	return g.GetFitness() > 100
 }
 
 // calculateMixins аналогична calculate_mixins из Python

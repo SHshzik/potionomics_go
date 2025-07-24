@@ -42,34 +42,8 @@ func main() {
 
 	// TODO: use not path, last updated file from directory.
 	ingredientsInInventory := service.GetIngredientsInInventory("./PotionomicsSaveData9.sav", bdIngredients)
-	_ = ingredientsInInventory
 
-	// simulator := &gen.BrewSimulator{Ingredients: ingredientsInInventory}
-	// creator := &gen.BitsetCreator{Ingredients: ingredientsInInventory}
-	// eliteConsumer := &gen.EliteConsumer{Ingredients: ingredientsInInventory}
-
-	// genAlgo := goga.NewGeneticAlgorithm()
-
-	// genAlgo.Simulator = simulator
-	// genAlgo.BitsetCreate = creator
-	// genAlgo.EliteConsumer = eliteConsumer
-
-	// // Maybe change.
-	// genAlgo.Mater = goga.NewMater(
-	// 	[]goga.MaterFunctionProbability{
-	// 		{P: 1.0, F: goga.TwoPointCrossover},
-	// 		{P: 1.0, F: goga.Mutate},
-	// 		{P: 1.0, F: goga.UniformCrossover, UseElite: true},
-	// 	},
-	// )
-
-	// // Maybe change.
-	// genAlgo.Selector = goga.NewSelector(
-	// 	[]goga.SelectorFunctionProbability{
-	// 		{P: 1.0, F: goga.Roulette},
-	// 	},
-	// )
-	app := service.NewApp(bdPotions, bdCauldrons, bdIngredients)
+	app := service.NewApp(bdPotions, bdCauldrons, bdIngredients, ingredientsInInventory)
 
 	// Create an instance of the app structure
 	// Create application with options

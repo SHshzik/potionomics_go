@@ -1,8 +1,7 @@
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue';
   import SelectInput from './components/SelectInput.vue';
-  import IngredientCard from './components/IngredientCard.vue';
-  // import { normalizeIngredients } from './utils/normalizeIngredients';
+  import RecipeBlock from './components/ReceiptBlock.vue';
   import { GetPotions, GetCauldrons, Generate } from '../wailsjs/go/service/App';
   import { domain } from '../wailsjs/go/models';
 
@@ -12,8 +11,7 @@
   const cauldrons = ref<domain.Cauldron[]>([]);
   const selectedPotion = ref<domain.Potion>();
   const selectedCauldron = ref<domain.Cauldron>();
-
-  const result = ref<{ name: string; count: number }[]>([]);
+  const receipts = ref<{ name: string }[][]>([]);
 
   onMounted(() => {
     GetPotions().then((result: domain.Potion[]) => {
@@ -32,14 +30,10 @@
     request.Potion = selectedPotion.value;
     request.Cauldron = selectedCauldron.value;
 
-    Generate(request).then((result) => {
+    Generate(request).then((result: any) => {
       console.log(result);
+      receipts.value = result;
     });
-    // const input: Ingredient[][] = [
-    //   [{ name: 'Слизь' }, { name: 'Коготь' }],
-    //   [{ name: 'Слизь' }, { name: 'Корень' }]
-    // ];
-    // result.value = normalizeIngredients(input);
   }
 </script>
 
@@ -71,11 +65,12 @@
         Собрать рецепт
       </button>
 
-      <div v-if="result.length" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-        <IngredientCard
-          v-for="ingredient in result"
-          :key="ingredient.name"
-          :ingredient="ingredient"
+      <div v-if="receipts.length" class="grid gap-4 pt-6">
+        <RecipeBlock
+          v-for="(recipe, i) in receipts"
+          :key="recipe[0].name"
+          :ingredients="recipe"
+          :index="i"
         />
       </div>
     </div>

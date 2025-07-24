@@ -1,11 +1,9 @@
 export type Ingredient = { name: string };
 
-export function normalizeIngredients(
-  input: Ingredient[][]
-): { name: string; count: number }[] {
+export function normalizeIngredients( input: { name: string }[] ): { name: string; count: number }[] {
   const map = new Map<string, number>();
 
-  input.flat().forEach(({ name }) => {
+  input.forEach(({ name }) => {
     map.set(name, (map.get(name) || 0) + 1);
   });
 

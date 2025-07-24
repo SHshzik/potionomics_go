@@ -1,29 +1,25 @@
 package gen
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/SHshzik/potionomics_go/domain"
 	"github.com/tomcraven/goga"
 )
 
 type EliteConsumer struct {
-	currentIter   int
-	Ingredients   []domain.Ingredient
-	ResultChannel chan string
+	IngredientsInInventory []domain.Ingredient
+	ResultChannel          chan []domain.Ingredient
 }
 
 func (ec *EliteConsumer) OnElite(g goga.Genome) {
-	bits := g.GetBits().GetAll()
-	ec.currentIter++
-	rString := strings.Builder{}
-	for i, selected := range bits {
-		if selected == 1 {
-			ingredient := ec.Ingredients[i]
-			rString.WriteString(fmt.Sprintf("%s,", ingredient.Name))
+	if g.GetFitness() > 0 {
+		bits := g.GetBits().GetAll()
+		result := make([]domain.Ingredient, 0, len(bits))
+		for i, selected := range bits {
+			if selected == 1 {
+				result = append(result, ec.IngredientsInInventory[i])
+			}
 		}
-	}
 
-	ec.ResultChannel <- rString.String()
+		ec.ResultChannel <- result
+	}
 }
