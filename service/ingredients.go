@@ -9,18 +9,18 @@ import (
 	"github.com/SHshzik/potionomics_go/domain"
 )
 
-func GetIngredients(filepath string, ingredientsRecords [][]string) []domain.Ingredient {
-	saveClient := save.NewClient()
-	allIngredients := make(map[string]domain.Ingredient, 250)
+func GetBDIngredients(ingredientsRecords [][]string) domain.BDIngredients {
+	allIngredients := make(domain.BDIngredients, len(ingredientsRecords))
 
-	for _, csvIngredient := range ingredientsRecords[1:] {
-		baseName := csvIngredient[0]
+	for _, ingredientRecord := range ingredientsRecords[1:] {
+		baseName := ingredientRecord[0]
 		name := toLower(baseName)
-		a, _ := strconv.Atoi(csvIngredient[1])
-		b, _ := strconv.Atoi(csvIngredient[2])
-		c, _ := strconv.Atoi(csvIngredient[3])
-		d, _ := strconv.Atoi(csvIngredient[4])
-		e, _ := strconv.Atoi(csvIngredient[5])
+		a, _ := strconv.Atoi(ingredientRecord[1])
+		b, _ := strconv.Atoi(ingredientRecord[2])
+		c, _ := strconv.Atoi(ingredientRecord[3])
+		d, _ := strconv.Atoi(ingredientRecord[4])
+		e, _ := strconv.Atoi(ingredientRecord[5])
+
 		allIngredients[name] = domain.Ingredient{
 			Name: baseName,
 			A:    a,
@@ -30,7 +30,12 @@ func GetIngredients(filepath string, ingredientsRecords [][]string) []domain.Ing
 			E:    e,
 		}
 	}
-	saveIngredients := saveClient.FetchIngredientsInInventory(filepath)
+
+	return allIngredients
+}
+
+func GetIngredientsInInventory(filepath string, BDIngredients domain.BDIngredients) []domain.Ingredient {
+	saveIngredients := save.FetchIngredientsInInventory(filepath)
 	var length int
 	for _, saveIngredient := range saveIngredients {
 		length += int(saveIngredient.Count)
@@ -39,7 +44,7 @@ func GetIngredients(filepath string, ingredientsRecords [][]string) []domain.Ing
 
 	for _, saveIngredient := range saveIngredients {
 		name := toLower(saveIngredient.Name)
-		ing, ok := allIngredients[name]
+		ing, ok := BDIngredients[name]
 		if !ok {
 			fmt.Println("ERROR NAME - ", name)
 			panic("ERROR NAME")

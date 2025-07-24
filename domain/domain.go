@@ -1,5 +1,11 @@
 package domain
 
+type (
+	BDPotions     map[string]Potion
+	BDIngredients map[string]Ingredient
+	BDCauldrons   map[string]Cauldron
+)
+
 type Ingredient struct {
 	Name string
 	A    int
@@ -10,13 +16,13 @@ type Ingredient struct {
 }
 
 type Potion struct {
-	ID   int    `json:"id"`
 	Name string `json:"name"`
 }
 
 type Cauldron struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	Name     string `json:"name"`
+	Capacity int    `json:"capacity"`
+	Magmin   int    `json:"magmin"`
 }
 
 type GenerateRequest struct {

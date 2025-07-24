@@ -32,7 +32,7 @@
     request.Potion = selectedPotion.value;
     request.Cauldron = selectedCauldron.value;
 
-    Generate(request).then((result: string) => {
+    Generate(request).then((result) => {
       console.log(result);
     });
     // const input: Ingredient[][] = [

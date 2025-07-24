@@ -16,19 +16,13 @@ var (
 	countB                       = []byte("Count")
 )
 
-type Client struct{}
-
-func NewClient() *Client {
-	return &Client{}
-}
-
-func (c *Client) FetchIngredientsInInventory(filepath string) []Ingredint {
+func FetchIngredientsInInventory(filepath string) []Ingredint {
 	data, err := ioutil.ReadFile(filepath) // "PotionomicsSaveData11.sav"
 	if err != nil {
 		fmt.Println("Ошибка при чтении файла:", err)
 		os.Exit(1)
 	}
-	// TODO: добавить учёт IngredientCollection
+
 	startIngredientsInInventoryOffset := bytes.Index(data, startIngredientsInInventoryB)
 	idx := bytes.Index(data[startIngredientsInInventoryOffset+1:], ingredientCollectionB)
 	offset := startIngredientsInInventoryOffset + idx + 2

@@ -1,8 +1,9 @@
 export namespace domain {
 	
 	export class Cauldron {
-	    id: number;
 	    name: string;
+	    capacity: number;
+	    magmin: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new Cauldron(source);
@@ -10,12 +11,12 @@ export namespace domain {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.id = source["id"];
 	        this.name = source["name"];
+	        this.capacity = source["capacity"];
+	        this.magmin = source["magmin"];
 	    }
 	}
 	export class Potion {
-	    id: number;
 	    name: string;
 	
 	    static createFrom(source: any = {}) {
@@ -24,7 +25,6 @@ export namespace domain {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.id = source["id"];
 	        this.name = source["name"];
 	    }
 	}
