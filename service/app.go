@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/SHshzik/potionomics_go/domain"
 	"github.com/SHshzik/potionomics_go/domain/gen"
+	"github.com/google/uuid"
 	"github.com/tomcraven/goga"
 )
 
@@ -22,7 +23,7 @@ func NewApp(bdPotions domain.BDPotions, bdCauldrons domain.BDCauldrons, bdIngred
 	}
 }
 
-func (s *App) Generate(r domain.GenerateRequest) [][]domain.Ingredient {
+func (s *App) Generate(r domain.GenerateRequest) []domain.BrewResult {
 	resultChannel := make(chan []domain.Ingredient, 10)
 
 	simulator := &gen.BrewSimulator{
@@ -67,13 +68,16 @@ func (s *App) Generate(r domain.GenerateRequest) [][]domain.Ingredient {
 		genAlgo.Simulate()
 	}()
 
-	top := make([][]domain.Ingredient, 0, 10)
+	top := make([]domain.BrewResult, 0, 10)
 
 	for r := range resultChannel {
 		if len(top) > 10 {
 			top = top[1:]
 		}
-		top = append(top, r)
+		top = append(top, domain.BrewResult{
+			ID:      uuid.New().String(),
+			Receipt: r,
+		})
 	}
 
 	return top

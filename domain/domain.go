@@ -6,8 +6,13 @@ type (
 	BDCauldrons   map[string]Cauldron
 )
 
+type BrewResult struct {
+	ID      string `json:"id"`
+	Receipt []Ingredient
+}
+
 type Ingredient struct {
-	Name string
+	Name string `json:"name"`
 	A    int
 	B    int
 	C    int

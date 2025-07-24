@@ -5,13 +5,11 @@
   import { GetPotions, GetCauldrons, Generate } from '../wailsjs/go/service/App';
   import { domain } from '../wailsjs/go/models';
 
-  // type Ingredient = { name: string };
-
   const potions = ref<domain.Potion[]>([]);
   const cauldrons = ref<domain.Cauldron[]>([]);
   const selectedPotion = ref<domain.Potion>();
   const selectedCauldron = ref<domain.Cauldron>();
-  const receipts = ref<{ name: string }[][]>([]);
+  const receipts = ref<domain.BrewResult[]>([]);
 
   onMounted(() => {
     GetPotions().then((result: domain.Potion[]) => {
@@ -30,8 +28,7 @@
     request.Potion = selectedPotion.value;
     request.Cauldron = selectedCauldron.value;
 
-    Generate(request).then((result: any) => {
-      console.log(result);
+    Generate(request).then((result: domain.BrewResult[]) => {
       receipts.value = result;
     });
   }
@@ -68,8 +65,8 @@
       <div v-if="receipts.length" class="grid gap-4 pt-6">
         <RecipeBlock
           v-for="(recipe, i) in receipts"
-          :key="recipe[0].name"
-          :ingredients="recipe"
+          :key="recipe.id"
+          :ingredients="recipe.Receipt"
           :index="i"
         />
       </div>

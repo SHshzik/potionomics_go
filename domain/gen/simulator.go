@@ -1,8 +1,6 @@
 package gen
 
 import (
-	"fmt"
-
 	"github.com/SHshzik/potionomics_go/domain"
 	"github.com/tomcraven/goga"
 )
