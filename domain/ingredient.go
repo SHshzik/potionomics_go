@@ -8,3 +8,11 @@ type Ingredient struct {
 	D    int
 	E    int
 }
+
+type Potion struct {
+	Name string
+}
+
+type Cauldron struct {
+	Name string
+}

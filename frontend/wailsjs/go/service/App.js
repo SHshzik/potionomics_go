@@ -5,3 +5,11 @@
 export function Generate() {
   return window['go']['service']['App']['Generate']();
 }
+
+export function GetCauldrons() {
+  return window['go']['service']['App']['GetCauldrons']();
+}
+
+export function GetPotions() {
+  return window['go']['service']['App']['GetPotions']();
+}

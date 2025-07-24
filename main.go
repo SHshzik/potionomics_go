@@ -4,6 +4,7 @@ import (
 	"embed"
 	"runtime"
 
+	"github.com/SHshzik/potionomics_go/adapter/csv"
 	"github.com/SHshzik/potionomics_go/domain/gen"
 	"github.com/SHshzik/potionomics_go/service"
 	"github.com/tomcraven/goga"
@@ -15,13 +16,20 @@ import (
 //go:embed all:frontend/dist
 var assets embed.FS
 
+//go:embed all:data
+var data embed.FS
+
 func main() {
 	numThreads := 4
 	runtime.GOMAXPROCS(numThreads)
 
+	potionsRecords := csv.ReadCsvFile(data, "data/potions.csv")
+	ingredientsRecords := csv.ReadCsvFile(data, "data/ingredients.csv")
+	cauldronsRecords := csv.ReadCsvFile(data, "data/cauldrons.csv")
+
 	// ingredient.
 	// TODO: use not path, last updated file from directory.
-	ingredients := service.GetIngredients("./PotionomicsSaveData9.sav")
+	ingredients := service.GetIngredients("./PotionomicsSaveData9.sav", ingredientsRecords)
 
 	simulator := &gen.BrewSimulator{Ingredients: ingredients, Capacity: 6}
 	creator := &gen.BitsetCreator{Ingredients: ingredients, Capacity: 6}
@@ -48,7 +56,7 @@ func main() {
 			{P: 1.0, F: goga.Roulette},
 		},
 	)
-	app := service.NewApp(&genAlgo, eliteConsumer, simulator)
+	app := service.NewApp(&genAlgo, eliteConsumer, simulator, potionsRecords, cauldronsRecords)
 
 	// Create an instance of the app structure
 	// Create application with options

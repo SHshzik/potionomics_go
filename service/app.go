@@ -3,21 +3,26 @@ package service
 import (
 	"strings"
 
+	"github.com/SHshzik/potionomics_go/domain"
 	"github.com/SHshzik/potionomics_go/domain/gen"
 	"github.com/tomcraven/goga"
 )
 
 type App struct {
-	GenAlgo       *goga.GeneticAlgorithm
-	EliteConsumer *gen.EliteConsumer
-	BrewSimulator *gen.BrewSimulator
+	GenAlgo          *goga.GeneticAlgorithm
+	EliteConsumer    *gen.EliteConsumer
+	BrewSimulator    *gen.BrewSimulator
+	PotionsRecords   [][]string
+	CauldronsRecords [][]string
 }
 
-func NewApp(genAlgo *goga.GeneticAlgorithm, eliteConsumer *gen.EliteConsumer, brewSimulator *gen.BrewSimulator) *App {
+func NewApp(genAlgo *goga.GeneticAlgorithm, eliteConsumer *gen.EliteConsumer, brewSimulator *gen.BrewSimulator, potionsRecords [][]string, cauldronsRecords [][]string) *App {
 	return &App{
-		GenAlgo:       genAlgo,
-		EliteConsumer: eliteConsumer,
-		BrewSimulator: brewSimulator,
+		GenAlgo:          genAlgo,
+		EliteConsumer:    eliteConsumer,
+		BrewSimulator:    brewSimulator,
+		PotionsRecords:   potionsRecords,
+		CauldronsRecords: cauldronsRecords,
 	}
 }
 
@@ -44,4 +49,20 @@ func (s *App) Generate() string {
 	}
 
 	return sr.String()
+}
+
+func (s *App) GetPotions() []domain.Potion {
+	potions := make([]domain.Potion, 0, len(s.PotionsRecords))
+	for _, record := range s.PotionsRecords[1:] {
+		potions = append(potions, domain.Potion{Name: record[0]})
+	}
+	return potions
+}
+
+func (s *App) GetCauldrons() []domain.Cauldron {
+	cauldrons := make([]domain.Cauldron, 0, len(s.CauldronsRecords))
+	for _, record := range s.CauldronsRecords[1:] {
+		cauldrons = append(cauldrons, domain.Cauldron{Name: record[0]})
+	}
+	return cauldrons
 }

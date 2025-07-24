@@ -5,18 +5,15 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/SHshzik/potionomics_go/adapter/csv"
 	"github.com/SHshzik/potionomics_go/adapter/save"
 	"github.com/SHshzik/potionomics_go/domain"
 )
 
-func GetIngredients(filepath string) []domain.Ingredient {
-	csvClient := csv.NewClient()
+func GetIngredients(filepath string, ingredientsRecords [][]string) []domain.Ingredient {
 	saveClient := save.NewClient()
-	csvIngredients := csvClient.ReadCsvFile("i.csv")
 	allIngredients := make(map[string]domain.Ingredient, 250)
 
-	for _, csvIngredient := range csvIngredients[1:] {
+	for _, csvIngredient := range ingredientsRecords[1:] {
 		baseName := csvIngredient[0]
 		name := toLower(baseName)
 		a, _ := strconv.Atoi(csvIngredient[1])

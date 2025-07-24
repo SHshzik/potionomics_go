@@ -1,18 +1,13 @@
 package csv
 
 import (
+	"embed"
 	"encoding/csv"
 	"log"
 	"os"
 )
 
-type Client struct{}
-
-func NewClient() *Client {
-	return &Client{}
-}
-
-func (cc *Client) ReadCsvFile(filePath string) [][]string {
+func ReadCsvFile(fs embed.FS, filePath string) [][]string {
 	f, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal("Unable to read input file "+filePath, err)
