@@ -1,6 +1,9 @@
 package gen
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/SHshzik/potionomics_go/domain"
 	"github.com/tomcraven/goga"
 )
@@ -9,6 +12,13 @@ type BrewSimulator struct {
 	IngredientsInInventory []domain.Ingredient
 	Capacity               int
 	ResultChannel          chan []domain.Ingredient
+	MaxA                   int
+	MaxB                   int
+	MaxC                   int
+	MaxD                   int
+	MaxE                   int
+	MinFitness             int
+	Ctx                    context.Context
 }
 
 func (bs *BrewSimulator) OnBeginSimulation() {
@@ -18,12 +28,6 @@ func (bs *BrewSimulator) OnEndSimulation() {
 }
 
 func (bs *BrewSimulator) Simulate(g goga.Genome) {
-	maxA := 80
-	maxB := 80
-	maxC := 0
-	maxD := 0
-	maxE := 0
-
 	bits := g.GetBits().GetAll()
 	a, b, c, d, e, weight, value := 0, 0, 0, 0, 0, 0, 0
 	if countOnes(bits) <= bs.Capacity {
@@ -40,18 +44,18 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 				value += m
 			}
 		}
-		mixins := calculateMixins(a, b, c, d, e, maxA, maxB, maxC, maxD, maxE)
+		mixins := calculateMixins(a, b, c, d, e, bs.MaxA, bs.MaxB, bs.MaxC, bs.MaxD, bs.MaxE)
 		if weight > 0 {
 			valueF := float64(value) * (1 - (float64(mixins) / float64(weight)))
 
-			if (maxA > 0 && a > maxA) ||
-				(maxB > 0 && b > maxB) ||
-				(maxC > 0 && c > maxC) ||
-				(maxD > 0 && d > maxD) ||
-				(maxE > 0 && e > maxE) {
+			if (bs.MaxA > 0 && a > bs.MaxA) ||
+				(bs.MaxB > 0 && b > bs.MaxB) ||
+				(bs.MaxC > 0 && c > bs.MaxC) ||
+				(bs.MaxD > 0 && d > bs.MaxD) ||
+				(bs.MaxE > 0 && e > bs.MaxE) {
 				valueF = 0
 			}
-			if valueF > 0 && weight > (maxA+maxB+maxC+maxD+maxE) {
+			if valueF > 0 && weight > (bs.MaxA+bs.MaxB+bs.MaxC+bs.MaxD+bs.MaxE) {
 				valueF = 0
 			}
 			if valueF > 0 && weight > 0 && ((float64(mixins)/float64(weight))*100 > 25) {
@@ -67,10 +71,17 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 }
 
 func (bs *BrewSimulator) ExitFunc(g goga.Genome) bool {
-	if g.GetFitness() > 100 {
-		close(bs.ResultChannel)
+	select {
+	case <-bs.Ctx.Done():
+		fmt.Println("Работа отменена:", bs.Ctx.Err())
+	default:
+		if g.GetFitness() > bs.MinFitness {
+			close(bs.ResultChannel)
+		}
+		return g.GetFitness() > bs.MinFitness
 	}
-	return g.GetFitness() > 100
+
+	return false
 }
 
 // calculateMixins аналогична calculate_mixins из Python

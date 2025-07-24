@@ -72,6 +72,7 @@ export namespace domain {
 	}
 	export class Potion {
 	    name: string;
+	    proportions: number[];
 	
 	    static createFrom(source: any = {}) {
 	        return new Potion(source);
@@ -80,6 +81,7 @@ export namespace domain {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.name = source["name"];
+	        this.proportions = source["proportions"];
 	    }
 	}
 	export class GenerateRequest {

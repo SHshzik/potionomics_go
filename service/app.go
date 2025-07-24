@@ -1,6 +1,9 @@
 package service
 
 import (
+	"context"
+	"time"
+
 	"github.com/SHshzik/potionomics_go/domain"
 	"github.com/SHshzik/potionomics_go/domain/gen"
 	"github.com/google/uuid"
@@ -26,10 +29,23 @@ func NewApp(bdPotions domain.BDPotions, bdCauldrons domain.BDCauldrons, bdIngred
 func (s *App) Generate(r domain.GenerateRequest) []domain.BrewResult {
 	resultChannel := make(chan []domain.Ingredient, 10)
 
+	maxA, maxB, maxC, maxD, maxE := calculateMaxValues(r.Cauldron.Magmin, r.Potion.Proportions)
+	minFitness := r.Cauldron.Magmin * 75 / 100
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
 	simulator := &gen.BrewSimulator{
 		IngredientsInInventory: s.ingredientsInInventory,
 		Capacity:               r.Cauldron.Capacity,
 		ResultChannel:          resultChannel,
+		MaxA:                   maxA,
+		MaxB:                   maxB,
+		MaxC:                   maxC,
+		MaxD:                   maxD,
+		MaxE:                   maxE,
+		MinFitness:             minFitness,
+		Ctx:                    ctx,
 	}
 	creator := &gen.BitsetCreator{
 		IngredientsInInventory: s.ingredientsInInventory,
@@ -97,4 +113,18 @@ func (s *App) GetCauldrons() []domain.Cauldron {
 		cauldrons = append(cauldrons, cauldron)
 	}
 	return cauldrons
+}
+
+func calculateMaxValues(maxVolume int, proportions []int) (int, int, int, int, int) {
+	sum := 0
+	for _, p := range proportions {
+		sum += p
+	}
+
+	result := make([]int, 5)
+	for i, p := range proportions {
+		result[i] = maxVolume * p / sum
+	}
+
+	return result[0], result[1], result[2], result[3], result[4]
 }

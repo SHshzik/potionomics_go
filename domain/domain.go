@@ -21,7 +21,8 @@ type Ingredient struct {
 }
 
 type Potion struct {
-	Name string `json:"name"`
+	Name        string `json:"name"`
+	Proportions []int  `json:"proportions"`
 }
 
 type Cauldron struct {
