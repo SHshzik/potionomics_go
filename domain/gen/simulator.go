@@ -1,6 +1,9 @@
 package gen
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/SHshzik/potionomics_go/domain"
 	"github.com/tomcraven/goga"
 )
@@ -17,8 +20,6 @@ func (bs *BrewSimulator) OnEndSimulation() {
 }
 
 func (bs *BrewSimulator) Simulate(g goga.Genome) {
-	// Abyssalite,Banshee's Bloody Tongue,Fairy Flower Bulb,Golemite,Impstool Mushroom,River-Pixie's Shell,    620
-	// Tmp.
 	maxA := 80
 	maxB := 80
 	maxC := 0
@@ -26,7 +27,6 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 	maxE := 0
 
 	bitset := g.GetBits()
-	// fmt.Printf("bits: %+v\n", bitset)
 	bits := bitset.GetAll()
 	a, b, c, d, e, weight, value := 0, 0, 0, 0, 0, 0, 0
 	if countOnes(bits) <= bs.Capacity {
@@ -38,8 +38,9 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 				c += item.C
 				d += item.D
 				e += item.E
-				weight += item.A + item.B + item.C + item.D + item.E
-				value += weight // как в Python, можно скорректировать формулу
+				m := item.A + item.B + item.C + item.D + item.E
+				weight += m
+				value += m // как в Python, можно скорректировать формулу
 			}
 		}
 		mixins := calculateMixins(a, b, c, d, e, maxA, maxB, maxC, maxD, maxE)
