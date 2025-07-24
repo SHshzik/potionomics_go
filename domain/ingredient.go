@@ -8,5 +8,3 @@ type Ingredient struct {
 	D    int
 	E    int
 }
-
-var mapSaveToDomainIngredientName = map[string]string{}

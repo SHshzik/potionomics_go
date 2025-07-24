@@ -10,7 +10,8 @@ import (
 
 type BrewSimulator struct {
 	Ingredients []domain.Ingredient
-	Capacity    int
+	Capacity      int
+	ResultChannel chan string
 }
 
 func (bs *BrewSimulator) OnBeginSimulation() {
@@ -26,8 +27,7 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 	maxD := 0
 	maxE := 0
 
-	bitset := g.GetBits()
-	bits := bitset.GetAll()
+	bits := g.GetBits().GetAll()
 	a, b, c, d, e, weight, value := 0, 0, 0, 0, 0, 0, 0
 	if countOnes(bits) <= bs.Capacity {
 		for i, selected := range bits {
@@ -40,7 +40,7 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 				e += item.E
 				m := item.A + item.B + item.C + item.D + item.E
 				weight += m
-				value += m // как в Python, можно скорректировать формулу
+				value += m
 			}
 		}
 		mixins := calculateMixins(a, b, c, d, e, maxA, maxB, maxC, maxD, maxE)
@@ -69,8 +69,10 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 }
 
 func (bs *BrewSimulator) ExitFunc(g goga.Genome) bool {
-	// fmt.Println("g.GetFitness()", g.GetFitness())
-	return g.GetFitness() > 500
+	if g.GetFitness() > 130 {
+		close(bs.ResultChannel)
+	}
+	return g.GetFitness() > 130
 }
 
 // calculateMixins аналогична calculate_mixins из Python

@@ -10,32 +10,22 @@ import (
 	"github.com/SHshzik/potionomics_go/domain"
 )
 
-type Service struct {
-	csvClient    *csv.Client
-	saveClient   *save.Client
-	saveFilePath string
-}
-
-func NewService(csvClient *csv.Client, saveClient *save.Client, filepath string) *Service {
-	return &Service{
-		csvClient:    csvClient,
-		saveClient:   saveClient,
-		saveFilePath: filepath,
-	}
-}
-
-func (s *Service) GetIngredients() []domain.Ingredient {
-	csvIngredients := s.csvClient.ReadCsvFile("i.csv")
+func GetIngredients(filepath string) []domain.Ingredient {
+	csvClient := csv.NewClient()
+	saveClient := save.NewClient()
+	csvIngredients := csvClient.ReadCsvFile("i.csv")
 	allIngredients := make(map[string]domain.Ingredient, 250)
+
 	for _, csvIngredient := range csvIngredients[1:] {
-		name := ToLower(csvIngredient[0])
+		baseName := csvIngredient[0]
+		name := toLower(baseName)
 		a, _ := strconv.Atoi(csvIngredient[1])
 		b, _ := strconv.Atoi(csvIngredient[2])
 		c, _ := strconv.Atoi(csvIngredient[3])
 		d, _ := strconv.Atoi(csvIngredient[4])
 		e, _ := strconv.Atoi(csvIngredient[5])
 		allIngredients[name] = domain.Ingredient{
-			Name: name,
+			Name: baseName,
 			A:    a,
 			B:    b,
 			C:    c,
@@ -43,8 +33,7 @@ func (s *Service) GetIngredients() []domain.Ingredient {
 			E:    e,
 		}
 	}
-	saveIngredients := s.saveClient.FetchIngredientsInInventory(s.saveFilePath)
-	fmt.Println(saveIngredients)
+	saveIngredients := saveClient.FetchIngredientsInInventory(filepath)
 	var length int
 	for _, saveIngredient := range saveIngredients {
 		length += int(saveIngredient.Count)
@@ -52,7 +41,7 @@ func (s *Service) GetIngredients() []domain.Ingredient {
 	ingredients := make([]domain.Ingredient, 0, length)
 
 	for _, saveIngredient := range saveIngredients {
-		name := ToLower(saveIngredient.Name)
+		name := toLower(saveIngredient.Name)
 		ing, ok := allIngredients[name]
 		if !ok {
 			fmt.Println("ERROR NAME - ", name)
@@ -65,7 +54,7 @@ func (s *Service) GetIngredients() []domain.Ingredient {
 	return ingredients
 }
 
-func ToLower(s string) string {
+func toLower(s string) string {
 	r := strings.ReplaceAll(s, " ", "")
 	r = strings.ReplaceAll(r, "'", "")
 	r = strings.ReplaceAll(r, "-", "")

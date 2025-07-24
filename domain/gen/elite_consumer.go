@@ -9,13 +9,13 @@ import (
 )
 
 type EliteConsumer struct {
-	currentIter int
-	Ingredients []domain.Ingredient
+	currentIter   int
+	Ingredients   []domain.Ingredient
+	ResultChannel chan string
 }
 
 func (ec *EliteConsumer) OnElite(g goga.Genome) {
-	bitset := g.GetBits()
-	bits := bitset.GetAll()
+	bits := g.GetBits().GetAll()
 	ec.currentIter++
 	rString := strings.Builder{}
 	for i, selected := range bits {
@@ -25,5 +25,5 @@ func (ec *EliteConsumer) OnElite(g goga.Genome) {
 		}
 	}
 
-	fmt.Println(ec.currentIter, "\t", rString.String(), "\t", g.GetFitness())
+	ec.ResultChannel <- rString.String()
 }
