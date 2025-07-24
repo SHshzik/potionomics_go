@@ -2,32 +2,44 @@
   import { ref, onMounted } from 'vue';
   import SelectInput from './components/SelectInput.vue';
   import IngredientCard from './components/IngredientCard.vue';
-  import { normalizeIngredients } from './utils/normalizeIngredients';
-  import { GetPotions, GetCauldrons } from '../wailsjs/go/service/App';
+  // import { normalizeIngredients } from './utils/normalizeIngredients';
+  import { GetPotions, GetCauldrons, Generate } from '../wailsjs/go/service/App';
+  import { domain } from '../wailsjs/go/models';
 
-  type Ingredient = { name: string };
+  // type Ingredient = { name: string };
 
-  const potions = ref<string[]>([]);
-  const cauldrons = ref<string[]>([]);
-  const selectedPotion = ref('');
-  const selectedCauldron = ref('');
+  const potions = ref<domain.Potion[]>([]);
+  const cauldrons = ref<domain.Cauldron[]>([]);
+  const selectedPotion = ref<domain.Potion>();
+  const selectedCauldron = ref<domain.Cauldron>();
+
   const result = ref<{ name: string; count: number }[]>([]);
 
   onMounted(() => {
-    GetPotions().then((result: { Name: string }[]) => {
-      potions.value = result.map((p: { Name: string }) => p.Name);
+    GetPotions().then((result: domain.Potion[]) => {
+      potions.value = result;
     })
-    GetCauldrons().then((result: { Name: string }[]) => {
-      cauldrons.value = result.map((p: { Name: string }) => p.Name);
+    GetCauldrons().then((result: domain.Cauldron[]) => {
+      cauldrons.value = result;
     })
   });
 
   function handleBrew() {
-    const input: Ingredient[][] = [
-      [{ name: 'Слизь' }, { name: 'Коготь' }],
-      [{ name: 'Слизь' }, { name: 'Корень' }]
-    ];
-    result.value = normalizeIngredients(input);
+    if (!selectedPotion.value || !selectedCauldron.value) {
+      return;
+    }
+    let request = new domain.GenerateRequest();
+    request.Potion = selectedPotion.value;
+    request.Cauldron = selectedCauldron.value;
+
+    Generate(request).then((result: string) => {
+      console.log(result);
+    });
+    // const input: Ingredient[][] = [
+    //   [{ name: 'Слизь' }, { name: 'Коготь' }],
+    //   [{ name: 'Слизь' }, { name: 'Корень' }]
+    // ];
+    // result.value = normalizeIngredients(input);
   }
 </script>
 

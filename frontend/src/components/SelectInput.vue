@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-  const modelValue = defineModel<string>();
+  const modelValue = defineModel<any>();
 
   defineProps<{
-    options: string[];
+    options: { id: number; name: string }[];
     label: string;
   }>();
 
@@ -17,7 +17,7 @@
       class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
     >
       <option value="" disabled>-- Выберите --</option>
-      <option v-for="opt in options" :key="opt" :value="opt">{{ opt }}</option>
+      <option v-for="opt in options" :key="opt.id" :value="opt">{{ opt.name }}</option>
     </select>
   </div>
 </template>

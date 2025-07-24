@@ -26,7 +26,7 @@ func NewApp(genAlgo *goga.GeneticAlgorithm, eliteConsumer *gen.EliteConsumer, br
 	}
 }
 
-func (s *App) Generate() string {
+func (s *App) Generate(r domain.GenerateRequest) string {
 	resultChannel := make(chan string, 10)
 	s.EliteConsumer.ResultChannel = resultChannel
 	s.BrewSimulator.ResultChannel = resultChannel
@@ -53,16 +53,16 @@ func (s *App) Generate() string {
 
 func (s *App) GetPotions() []domain.Potion {
 	potions := make([]domain.Potion, 0, len(s.PotionsRecords))
-	for _, record := range s.PotionsRecords[1:] {
-		potions = append(potions, domain.Potion{Name: record[0]})
+	for i, record := range s.PotionsRecords[1:] {
+		potions = append(potions, domain.Potion{ID: i, Name: record[0]})
 	}
 	return potions
 }
 
 func (s *App) GetCauldrons() []domain.Cauldron {
 	cauldrons := make([]domain.Cauldron, 0, len(s.CauldronsRecords))
-	for _, record := range s.CauldronsRecords[1:] {
-		cauldrons = append(cauldrons, domain.Cauldron{Name: record[0]})
+	for i, record := range s.CauldronsRecords[1:] {
+		cauldrons = append(cauldrons, domain.Cauldron{ID: i, Name: record[0]})
 	}
 	return cauldrons
 }
