@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/SHshzik/potionomics_go/domain"
@@ -97,6 +98,22 @@ func (s *App) Generate(r domain.GenerateRequest) []domain.BrewResult {
 	}
 
 	return top
+}
+
+func (s *App) GetPotion(id string) (domain.Potion, error) {
+	potion, ok := s.bdPotions[id]
+	if !ok {
+		return domain.Potion{}, errors.New("potion not found")
+	}
+	return potion, nil
+}
+
+func (s *App) GetCauldron(id string) (domain.Cauldron, error) {
+	cauldron, ok := s.bdCauldrons[id]
+	if !ok {
+		return domain.Cauldron{}, errors.New("cauldron not found")
+	}
+	return cauldron, nil
 }
 
 func (s *App) GetPotions() []domain.Potion {
