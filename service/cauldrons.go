@@ -10,7 +10,7 @@ import (
 func GetBDCauldrons(cauldronsRecords [][]string) domain.BDCauldrons {
 	allCauldrons := make(domain.BDCauldrons, len(cauldronsRecords))
 
-	for _, cauldronsRecord := range cauldronsRecords[1:] {
+	for i, cauldronsRecord := range cauldronsRecords[1:] {
 		id := uuid.New().String()
 		capacity, _ := strconv.Atoi(cauldronsRecord[1])
 		magmin, _ := strconv.Atoi(cauldronsRecord[2])
@@ -19,6 +19,8 @@ func GetBDCauldrons(cauldronsRecords [][]string) domain.BDCauldrons {
 			Name:     cauldronsRecord[0],
 			Capacity: capacity,
 			Magmin:   magmin,
+			Translit: cauldronsRecord[10],
+			Order:    i,
 		}
 	}
 

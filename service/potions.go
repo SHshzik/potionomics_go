@@ -10,7 +10,7 @@ import (
 func GetBDPotions(potionsRecords [][]string) domain.BDPotions {
 	allPotions := make(domain.BDPotions, len(potionsRecords))
 
-	for _, potionRecord := range potionsRecords[1:] {
+	for i, potionRecord := range potionsRecords[1:] {
 		id := uuid.New().String()
 		a, _ := strconv.Atoi(potionRecord[3])
 		b, _ := strconv.Atoi(potionRecord[4])
@@ -21,6 +21,8 @@ func GetBDPotions(potionsRecords [][]string) domain.BDPotions {
 			ID:          id,
 			Name:        potionRecord[0],
 			Proportions: []int{a, b, c, d, e},
+			Translit:    potionRecord[9],
+			Order:       i,
 		}
 	}
 

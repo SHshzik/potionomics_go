@@ -30,6 +30,8 @@ type Potion struct {
 	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Proportions []int  `json:"proportions"`
+	Translit    string `json:"translit"`
+	Order       int    `json:"order"`
 }
 
 type Cauldron struct {
@@ -37,6 +39,8 @@ type Cauldron struct {
 	Name     string `json:"name"`
 	Capacity int    `json:"capacity"`
 	Magmin   int    `json:"magmin"`
+	Translit string `json:"translit"`
+	Order    int    `json:"order"`
 }
 
 type GenerateRequest struct {

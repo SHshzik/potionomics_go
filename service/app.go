@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"sort"
 	"time"
 
 	"github.com/SHshzik/potionomics_go/domain"
@@ -127,6 +128,9 @@ func (s *App) GetPotions() []domain.Potion {
 	for _, potion := range s.bdPotions {
 		potions = append(potions, potion)
 	}
+	sort.Slice(potions, func(i, j int) bool {
+		return potions[i].Order < potions[j].Order
+	})
 	return potions
 }
 
@@ -135,5 +139,8 @@ func (s *App) GetCauldrons() []domain.Cauldron {
 	for _, cauldron := range s.bdCauldrons {
 		cauldrons = append(cauldrons, cauldron)
 	}
+	sort.Slice(cauldrons, func(i, j int) bool {
+		return cauldrons[i].Order < cauldrons[j].Order
+	})
 	return cauldrons
 }

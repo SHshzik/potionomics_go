@@ -1,21 +1,21 @@
-Potion,Licence Tier,Base Value,Magimin A,Magimin B,Magimin C,Magimin D,Magimin E,Magimin Balance
-Health Potion,1,16,1,1,0,0,0,1:1:0:0:0
-Mana Potion,1,20,0,1,1,0,0,0:1:1:0:0
-Stamina Potion,2,22,1,0,0,0,1,1:0:0:0:1
-Speed Potion,2,24,0,0,1,1,0,0:0:1:1:0
-Tolerance Potion,4,28,0,0,0,1,1,0:0:0:1:1
-Fire Tonic,1,18,1,0,1,0,0,1:0:1:0:0
-Ice Tonic,2,20,1,0,0,1,0,1:0:0:1:0
-Thunder Tonic,2,22,0,1,0,1,0,0:1:0:1:0
-Shadow Tonic,2,24,0,1,0,0,1,0:1:0:0:1
-Radiation Tonic,4,26,0,0,1,0,1,0:0:1:0:1
-Sight Enhancer,1,20,3,4,3,0,0,3:4:3:0:0
-Alertness Enhancer,2,26,0,3,4,3,0,0:3:4:3:0
-Insight Enhancer,3,24,4,3,0,0,3,4:3:0:0:3
-Dowsing Enhancer,3,28,3,0,0,3,4,3:0:0:3:4
-Seeking Enhancer,4,32,0,0,3,4,3,0:0:3:4:3
-Poison Cure,1,19,2,0,1,1,0,2:0:1:1:0
-Drowsiness Cure,2,21,1,1,0,2,0,1:1:0:2:0
-Petrification Cure,3,22,1,0,2,0,1,1:0:2:0:1
-Silence Cure,3,20,0,2,1,0,1,0:2:1:0:1
-Curse Cure,4,25,0,1,1,0,2,0:1:1:0:2
+Potion,Licence Tier,Base Value,Magimin A,Magimin B,Magimin C,Magimin D,Magimin E,Magimin Balance,Перевод
+Health Potion,1,16,1,1,0,0,0,1:1:0:0:0,Зелье здоровья
+Mana Potion,1,20,0,1,1,0,0,0:1:1:0:0,Зелье маны
+Stamina Potion,2,22,1,0,0,0,1,1:0:0:0:1,Зелье выносливости
+Speed Potion,2,24,0,0,1,1,0,0:0:1:1:0,Зелье скорости
+Tolerance Potion,4,28,0,0,0,1,1,0:0:0:1:1,
+Fire Tonic,1,18,1,0,1,0,0,1:0:1:0:0,
+Ice Tonic,2,20,1,0,0,1,0,1:0:0:1:0,
+Thunder Tonic,2,22,0,1,0,1,0,0:1:0:1:0,
+Shadow Tonic,2,24,0,1,0,0,1,0:1:0:0:1,
+Radiation Tonic,4,26,0,0,1,0,1,0:0:1:0:1,
+Sight Enhancer,1,20,3,4,3,0,0,3:4:3:0:0,
+Alertness Enhancer,2,26,0,3,4,3,0,0:3:4:3:0,
+Insight Enhancer,3,24,4,3,0,0,3,4:3:0:0:3,
+Dowsing Enhancer,3,28,3,0,0,3,4,3:0:0:3:4,
+Seeking Enhancer,4,32,0,0,3,4,3,0:0:3:4:3,
+Poison Cure,1,19,2,0,1,1,0,2:0:1:1:0,
+Drowsiness Cure,2,21,1,1,0,2,0,1:1:0:2:0,
+Petrification Cure,3,22,1,0,2,0,1,1:0:2:0:1,
+Silence Cure,3,20,0,2,1,0,1,0:2:1:0:1,
+Curse Cure,4,25,0,1,1,0,2,0:1:1:0:2,
