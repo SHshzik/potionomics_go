@@ -4,13 +4,14 @@
   import RecipeBlock from './components/ReceiptBlock.vue';
   import { GetPotions, GetCauldrons, Generate, GetInventory } from './client/app';
   import { domain } from './models';
+  import { normalizeInventory } from './utils/normalizeIngredients'
 
   const potions = ref<domain.Potion[]>([]);
   const cauldrons = ref<domain.Cauldron[]>([]);
   const selectedPotion = ref<domain.Potion>();
   const selectedCauldron = ref<domain.Cauldron>();
   const receipts = ref<domain.BrewResult[]>([]);
-  const inventory = ref<domain.InventoryCell[]>([]);
+  const inventory = ref<{ name: string, count: number }[]>([]);
 
   onMounted(() => {
     GetPotions().then((result: domain.Potion[]) => {
@@ -33,7 +34,7 @@
 
   function showInventory() {
     GetInventory().then((result: domain.InventoryCell[]) => {
-      inventory.value = result
+      inventory.value = normalizeInventory(result)
     })
   }
 </script>
@@ -76,7 +77,6 @@
       </div>
 
       <br />
-      <br />
 
       <button
         @click="showInventory"
@@ -86,8 +86,8 @@
       </button>
 
       <ul class="space-y-1 text-sm">
-        <li v-for="ing in inventory" :key="ing.ingredient.name" class="flex justify-between">
-          <span>{{ ing.ingredient.name }} - {{ ing.ingredient.translit }}</span>
+        <li v-for="ing in inventory" :key="ing.name" class="flex justify-between">
+          <span>{{ ing.name }} x {{ ing.count }}</span>
         </li>
       </ul>
     </div>
