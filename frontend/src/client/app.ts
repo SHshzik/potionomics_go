@@ -15,6 +15,13 @@ export async function GetCauldrons(): Promise<domain.Cauldron[]> {
   return data.map((item: any) => new domain.Cauldron(item));
 }
 
+export async function GetInventory(): Promise<domain.Ingredient[]> {
+  const res = await fetch(`${BASE_URL}/get_inventory`);
+  if (!res.ok) throw new Error('Ошибка при получении инвентаря');
+  const data = await res.json();
+  return data.map((item: any) => new domain.Ingredient(item));
+}
+
 export async function Generate(potionId: string, cauldronId: string): Promise<domain.BrewResult[]> {
   const res = await fetch(`${BASE_URL}/generate`, {
     method: 'POST',

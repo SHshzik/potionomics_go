@@ -2,7 +2,7 @@
   import { ref, onMounted } from 'vue';
   import SelectInput from './components/SelectInput.vue';
   import RecipeBlock from './components/ReceiptBlock.vue';
-  import { GetPotions, GetCauldrons, Generate } from './client/app';
+  import { GetPotions, GetCauldrons, Generate, GetInventory } from './client/app';
   import { domain } from './models';
 
   const potions = ref<domain.Potion[]>([]);
@@ -10,6 +10,7 @@
   const selectedPotion = ref<domain.Potion>();
   const selectedCauldron = ref<domain.Cauldron>();
   const receipts = ref<domain.BrewResult[]>([]);
+  const inventory = ref<domain.Ingredient[]>([]);
 
   onMounted(() => {
     GetPotions().then((result: domain.Potion[]) => {
@@ -28,6 +29,12 @@
     Generate(selectedPotion.value.id, selectedCauldron.value.id).then((result: domain.BrewResult[]) => {
       receipts.value = result;
     });
+  }
+
+  function showInventory() {
+    GetInventory().then((result: domain.Ingredient[]) => {
+      inventory.value = result
+    })
   }
 </script>
 
@@ -67,6 +74,22 @@
           :index="i"
         />
       </div>
+
+      <br />
+      <br />
+
+      <button
+        @click="showInventory"
+        class="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition"
+      >
+        Показать инвентарь
+      </button>
+
+      <ul class="space-y-1 text-sm">
+        <li v-for="ing in inventory" :key="ing.name" class="flex justify-between">
+          <span>{{ ing.name }} - {{ ing.translit }}</span>
+        </li>
+      </ul>
     </div>
   </div>
 </template>

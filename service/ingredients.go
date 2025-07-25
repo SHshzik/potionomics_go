@@ -22,19 +22,22 @@ func GetBDIngredients(ingredientsRecords [][]string) domain.BDIngredients {
 		e, _ := strconv.Atoi(ingredientRecord[5])
 
 		allIngredients[name] = domain.Ingredient{
-			Name: baseName,
-			A:    a,
-			B:    b,
-			C:    c,
-			D:    d,
-			E:    e,
+			Name:     baseName,
+			Translit: ingredientRecord[42],
+			A:        a,
+			B:        b,
+			C:        c,
+			D:        d,
+			E:        e,
 		}
 	}
 
 	return allIngredients
 }
 
-func GetIngredientsInInventory(filepath string, BDIngredients domain.BDIngredients) []domain.Ingredient {
+func GetIngredientsInInventory(BDIngredients domain.BDIngredients) []domain.Ingredient {
+	filepath, _ := FindLastUpdated()
+	fmt.Println(filepath)
 	saveIngredients := save.FetchIngredientsInInventory(filepath)
 	var length int
 	for _, saveIngredient := range saveIngredients {

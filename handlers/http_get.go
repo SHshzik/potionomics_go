@@ -9,3 +9,7 @@ func (s *HTTPServer) GetPotions(c *fiber.Ctx) error {
 func (s *HTTPServer) GetCauldrons(c *fiber.Ctx) error {
 	return c.JSON(s.app.GetCauldrons())
 }
+
+func (s *HTTPServer) GetInventory(c *fiber.Ctx) error {
+	return c.JSON(s.app.GetIngredientsInInventory())
+}

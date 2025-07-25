@@ -47,9 +47,6 @@ func main() {
 		bdIngredients = service.GetBDIngredients(ingredientsRecords)
 	}
 
-	// TODO: use not path, last updated file from directory.
-	ingredientsInInventory := service.GetIngredientsInInventory("./PotionomicsSaveData9.sav", bdIngredients)
-
 	server := httpserver.New(httpserver.Port("8080"))
 
 	{
@@ -58,11 +55,12 @@ func main() {
 	}
 
 	{
-		app := service.NewApp(bdPotions, bdCauldrons, bdIngredients, ingredientsInInventory)
+		app := service.NewApp(bdPotions, bdCauldrons, bdIngredients)
 		myServer := handlers.NewHTTPServer(app, l)
 		v1Ground := server.App.Group("")
 		v1Ground.Get("/get_potions", myServer.GetPotions)
 		v1Ground.Get("/get_cauldrons", myServer.GetCauldrons)
+		v1Ground.Get("/get_inventory", myServer.GetInventory)
 		v1Ground.Post("/generate", myServer.Generate)
 	}
 

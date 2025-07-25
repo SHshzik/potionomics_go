@@ -1,6 +1,7 @@
 export namespace domain {
   export class Ingredient {
     name: string;
+    translit: string;
     A: number;
     B: number;
     C: number;
@@ -10,6 +11,7 @@ export namespace domain {
     constructor(source: any = {}) {
       if (typeof source === 'string') source = JSON.parse(source);
       this.name = source["name"];
+      this.translit = source["translit"];
       this.A = source["A"];
       this.B = source["B"];
       this.C = source["C"];

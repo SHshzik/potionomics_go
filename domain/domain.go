@@ -12,12 +12,13 @@ type BrewResult struct {
 }
 
 type Ingredient struct {
-	Name string `json:"name"`
-	A    int
-	B    int
-	C    int
-	D    int
-	E    int
+	Name     string `json:"name"`
+	A        int
+	B        int
+	C        int
+	D        int
+	E        int
+	Translit string `json:"translit"`
 }
 
 type Potion struct {

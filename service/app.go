@@ -18,16 +18,21 @@ type App struct {
 	ingredientsInInventory []domain.Ingredient
 }
 
-func NewApp(bdPotions domain.BDPotions, bdCauldrons domain.BDCauldrons, bdIngredients domain.BDIngredients, ingredientsInInventory []domain.Ingredient) *App {
+func NewApp(bdPotions domain.BDPotions, bdCauldrons domain.BDCauldrons, bdIngredients domain.BDIngredients) *App {
 	return &App{
-		bdPotions:              bdPotions,
-		bdCauldrons:            bdCauldrons,
-		bdIngredients:          bdIngredients,
-		ingredientsInInventory: ingredientsInInventory,
+		bdPotions:     bdPotions,
+		bdCauldrons:   bdCauldrons,
+		bdIngredients: bdIngredients,
 	}
 }
 
+func (s *App) GetIngredientsInInventory() []domain.Ingredient {
+	return GetIngredientsInInventory(s.bdIngredients)
+}
+
 func (s *App) Generate(r domain.GenerateRequest) []domain.BrewResult {
+	s.ingredientsInInventory = s.GetIngredientsInInventory()
+
 	resultChannel := make(chan []domain.Ingredient, 10)
 
 	maxA, maxB, maxC, maxD, maxE := calculateMaxValues(r.Cauldron.Magmin, r.Potion.Proportions)
