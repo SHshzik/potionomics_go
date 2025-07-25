@@ -15,7 +15,7 @@ type App struct {
 	bdPotions              domain.BDPotions
 	bdCauldrons            domain.BDCauldrons
 	bdIngredients          domain.BDIngredients
-	ingredientsInInventory []domain.Ingredient
+	ingredientsInInventory []domain.InventoryCell
 }
 
 func NewApp(bdPotions domain.BDPotions, bdCauldrons domain.BDCauldrons, bdIngredients domain.BDIngredients) *App {
@@ -26,7 +26,7 @@ func NewApp(bdPotions domain.BDPotions, bdCauldrons domain.BDCauldrons, bdIngred
 	}
 }
 
-func (s *App) GetIngredientsInInventory() []domain.Ingredient {
+func (s *App) GetIngredientsInInventory() []domain.InventoryCell {
 	return GetIngredientsInInventory(s.bdIngredients)
 }
 
@@ -44,6 +44,7 @@ func (s *App) Generate(r domain.GenerateRequest) []domain.BrewResult {
 	simulator := &gen.BrewSimulator{
 		IngredientsInInventory: s.ingredientsInInventory,
 		Capacity:               r.Cauldron.Capacity,
+		Proportions:            r.Potion.Proportions,
 		ResultChannel:          resultChannel,
 		MaxA:                   maxA,
 		MaxB:                   maxB,
@@ -135,18 +136,4 @@ func (s *App) GetCauldrons() []domain.Cauldron {
 		cauldrons = append(cauldrons, cauldron)
 	}
 	return cauldrons
-}
-
-func calculateMaxValues(maxVolume int, proportions []int) (int, int, int, int, int) {
-	sum := 0
-	for _, p := range proportions {
-		sum += p
-	}
-
-	result := make([]int, 5)
-	for i, p := range proportions {
-		result[i] = maxVolume * p / sum
-	}
-
-	return result[0], result[1], result[2], result[3], result[4]
 }

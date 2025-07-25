@@ -35,7 +35,7 @@ func GetBDIngredients(ingredientsRecords [][]string) domain.BDIngredients {
 	return allIngredients
 }
 
-func GetIngredientsInInventory(BDIngredients domain.BDIngredients) []domain.Ingredient {
+func GetIngredientsInInventory(BDIngredients domain.BDIngredients) []domain.InventoryCell {
 	filepath, _ := FindLastUpdated()
 	fmt.Println(filepath)
 	saveIngredients := save.FetchIngredientsInInventory(filepath)
@@ -43,7 +43,7 @@ func GetIngredientsInInventory(BDIngredients domain.BDIngredients) []domain.Ingr
 	for _, saveIngredient := range saveIngredients {
 		length += int(saveIngredient.Count)
 	}
-	ingredients := make([]domain.Ingredient, 0, length)
+	ingredients := make([]domain.InventoryCell, 0, length)
 
 	for _, saveIngredient := range saveIngredients {
 		name := toLower(saveIngredient.Name)
@@ -53,7 +53,10 @@ func GetIngredientsInInventory(BDIngredients domain.BDIngredients) []domain.Ingr
 			panic("ERROR NAME")
 		}
 		for i := 0; i < int(saveIngredient.Count); i++ {
-			ingredients = append(ingredients, ing)
+			ingredients = append(ingredients, domain.InventoryCell{
+				Ingredint:  ing,
+				CellNumber: i,
+			})
 		}
 	}
 	return ingredients

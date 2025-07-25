@@ -11,6 +11,11 @@ type BrewResult struct {
 	Receipt []Ingredient
 }
 
+type InventoryCell struct {
+	Ingredint  Ingredient
+	CellNumber int
+}
+
 type Ingredient struct {
 	Name     string `json:"name"`
 	A        int
