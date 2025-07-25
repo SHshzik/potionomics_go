@@ -35,7 +35,7 @@ func (s *App) Generate(r domain.GenerateRequest) []domain.BrewResult {
 
 	resultChannel := make(chan []domain.Ingredient, 10)
 
-	maxA, maxB, maxC, maxD, maxE := calculateMaxValues(r.Cauldron.Magmin, r.Potion.Proportions)
+	maxA, maxB, maxC, maxD, maxE := gen.CalculateMaxValues(r.Cauldron.Magmin, r.Potion.Proportions)
 	minFitness := r.Cauldron.Magmin * 75 / 100
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

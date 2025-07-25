@@ -34,7 +34,7 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 	if countOnes(bits) <= bs.Capacity {
 		for i, selected := range bits {
 			if selected == 1 {
-				item := bs.IngredientsInInventory[i].Ingredint
+				item := bs.IngredientsInInventory[i].Ingredient
 				a += item.A
 				b += item.B
 				c += item.C

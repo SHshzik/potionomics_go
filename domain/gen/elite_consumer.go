@@ -1,8 +1,6 @@
 package gen
 
 import (
-	"fmt"
-
 	"github.com/SHshzik/potionomics_go/domain"
 	"github.com/tomcraven/goga"
 )
@@ -18,7 +16,7 @@ func (ec *EliteConsumer) OnElite(g goga.Genome) {
 		result := make([]domain.Ingredient, 0, len(bits))
 		for i, selected := range bits {
 			if selected == 1 {
-				result = append(result, ec.IngredientsInInventory[i].Ingredint)
+				result = append(result, ec.IngredientsInInventory[i].Ingredient)
 			}
 		}
 

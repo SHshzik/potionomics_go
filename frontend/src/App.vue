@@ -10,7 +10,7 @@
   const selectedPotion = ref<domain.Potion>();
   const selectedCauldron = ref<domain.Cauldron>();
   const receipts = ref<domain.BrewResult[]>([]);
-  const inventory = ref<domain.Ingredient[]>([]);
+  const inventory = ref<domain.InventoryCell[]>([]);
 
   onMounted(() => {
     GetPotions().then((result: domain.Potion[]) => {
@@ -32,7 +32,7 @@
   }
 
   function showInventory() {
-    GetInventory().then((result: domain.Ingredient[]) => {
+    GetInventory().then((result: domain.InventoryCell[]) => {
       inventory.value = result
     })
   }
@@ -86,8 +86,8 @@
       </button>
 
       <ul class="space-y-1 text-sm">
-        <li v-for="ing in inventory" :key="ing.name" class="flex justify-between">
-          <span>{{ ing.name }} - {{ ing.translit }}</span>
+        <li v-for="ing in inventory" :key="ing.ingredient.name" class="flex justify-between">
+          <span>{{ ing.ingredient.name }} - {{ ing.ingredient.translit }}</span>
         </li>
       </ul>
     </div>

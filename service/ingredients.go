@@ -54,7 +54,7 @@ func GetIngredientsInInventory(BDIngredients domain.BDIngredients) []domain.Inve
 		}
 		for i := 0; i < int(saveIngredient.Count); i++ {
 			ingredients = append(ingredients, domain.InventoryCell{
-				Ingredint:  ing,
+				Ingredient: ing,
 				CellNumber: i,
 			})
 		}

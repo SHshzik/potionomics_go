@@ -12,8 +12,8 @@ type BrewResult struct {
 }
 
 type InventoryCell struct {
-	Ingredint  Ingredient
-	CellNumber int
+	Ingredient Ingredient `json:"ingredient"`
+	CellNumber int        `json:"cell_number"`
 }
 
 type Ingredient struct {

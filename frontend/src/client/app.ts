@@ -15,11 +15,13 @@ export async function GetCauldrons(): Promise<domain.Cauldron[]> {
   return data.map((item: any) => new domain.Cauldron(item));
 }
 
-export async function GetInventory(): Promise<domain.Ingredient[]> {
+export async function GetInventory(): Promise<domain.InventoryCell[]> {
   const res = await fetch(`${BASE_URL}/get_inventory`);
   if (!res.ok) throw new Error('Ошибка при получении инвентаря');
   const data = await res.json();
-  return data.map((item: any) => new domain.Ingredient(item));
+  return data.map((item: { ingredient: any, cell_number: number }) => {
+    return new domain.InventoryCell({ ingredient: new domain.Ingredient(item.ingredient), cell_number: item.cell_number })
+  });
 }
 
 export async function Generate(potionId: string, cauldronId: string): Promise<domain.BrewResult[]> {

@@ -45,7 +45,7 @@ export namespace domain {
   }
 
   export class Cauldron {
-	id: string;
+	  id: string;
     name: string;
     capacity: number;
     magmin: number;
@@ -68,5 +68,16 @@ export namespace domain {
 		this.potionId = source["potionId"];
 		this.cauldronId = source["cauldronId"];
 	  }
+  }
+
+  export class InventoryCell {
+    ingredient: Ingredient;
+    cell_number: number;
+
+    constructor(source: any = {}) {
+      if (typeof source === 'string') source = JSON.parse(source);
+      this.ingredient = source["ingredient"];
+      this.cell_number = source["cell_number"];
+    }
   }
 }
