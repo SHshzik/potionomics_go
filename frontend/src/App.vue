@@ -2,7 +2,7 @@
   import { ref, onMounted } from 'vue';
   import SelectInput from './components/SelectInput.vue';
   import RecipeBlock from './components/ReceiptBlock.vue';
-  import { GetPotions, GetCauldrons, Generate, GetInventory } from './client/app';
+  import { GetPotions, GetCauldrons, Generate, GetInventory, GetShop } from './client/app';
   import { domain } from './models';
   import { normalizeInventory } from './utils/normalizeIngredients'
 
@@ -12,6 +12,7 @@
   const selectedCauldron = ref<domain.Cauldron>();
   const receipts = ref<domain.BrewResult[]>([]);
   const inventory = ref<{ name: string, count: number }[]>([]);
+  const shop = ref<{ name: string, count: number }[]>([]);
 
   onMounted(() => {
     GetPotions().then((result: domain.Potion[]) => {
@@ -35,6 +36,12 @@
   function showInventory() {
     GetInventory().then((result: domain.InventoryCell[]) => {
       inventory.value = normalizeInventory(result)
+    })
+  }
+
+  function showShop() {
+    GetShop().then((result: domain.InventoryCell[]) => {
+      shop.value = normalizeInventory(result)
     })
   }
 </script>
@@ -87,6 +94,21 @@
 
       <ul class="space-y-1 text-sm">
         <li v-for="ing in inventory" :key="ing.name" class="flex justify-between">
+          <span>{{ ing.name }} x {{ ing.count }}</span>
+        </li>
+      </ul>
+
+      <br />
+
+      <button
+        @click="showShop"
+        class="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition"
+      >
+        Показать магазин
+      </button>
+
+      <ul class="space-y-1 text-sm">
+        <li v-for="ing in shop" :key="ing.name" class="flex justify-between">
           <span>{{ ing.name }} x {{ ing.count }}</span>
         </li>
       </ul>

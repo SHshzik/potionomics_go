@@ -13,3 +13,7 @@ func (s *HTTPServer) GetCauldrons(c *fiber.Ctx) error {
 func (s *HTTPServer) GetInventory(c *fiber.Ctx) error {
 	return c.JSON(s.app.GetIngredientsInInventory())
 }
+
+func (s *HTTPServer) GetShop(c *fiber.Ctx) error {
+	return c.JSON(s.app.GetIngredientsInShop())
+}

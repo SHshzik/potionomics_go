@@ -28,7 +28,7 @@ const grouped = computed(() => {
         C: existing.C + ing.C,
         D: existing.D + ing.D,
         E: existing.E + ing.E,
-        translit: "",
+        translit: ing.translit,
         count: existing.count + 1,
       });
     }
@@ -69,7 +69,7 @@ const totalEnergy = computed(() => {
         class="flex flex-col border-b pb-2 last:border-0"
       >
         <div class="flex justify-between font-medium">
-          <span>{{ ing.name }}</span>
+          <span>{{ ing.translit }} ({{ ing.name }})</span>
           <span class="text-gray-500"
             >×{{ ing.count }} — Σ: {{ ing.total }}</span
           >

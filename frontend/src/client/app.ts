@@ -24,6 +24,15 @@ export async function GetInventory(): Promise<domain.InventoryCell[]> {
   });
 }
 
+export async function GetShop(): Promise<domain.InventoryCell[]> {
+  const res = await fetch(`${BASE_URL}/get_shop`);
+  if (!res.ok) throw new Error('Ошибка при получении магазина');
+  const data = await res.json();
+  return data.map((item: { ingredient: any, cell_number: number }) => {
+    return new domain.InventoryCell({ ingredient: new domain.Ingredient(item.ingredient), cell_number: item.cell_number })
+  });
+}
+
 export async function Generate(potionId: string, cauldronId: string): Promise<domain.BrewResult[]> {
   const res = await fetch(`${BASE_URL}/generate`, {
     method: 'POST',

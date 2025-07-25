@@ -62,6 +62,33 @@ func GetIngredientsInInventory(BDIngredients domain.BDIngredients) []domain.Inve
 	return ingredients
 }
 
+func GetIngredientsInShop(BDIngredients domain.BDIngredients) []domain.InventoryCell {
+	filepath, _ := FindLastUpdated()
+	fmt.Println(filepath)
+	saveIngredients := save.FetchIngredientsInShop(filepath)
+	var length int
+	for _, saveIngredient := range saveIngredients {
+		length += int(saveIngredient.Count)
+	}
+	ingredients := make([]domain.InventoryCell, 0, length)
+
+	for _, saveIngredient := range saveIngredients {
+		name := toLower(saveIngredient.Name)
+		ing, ok := BDIngredients[name]
+		if !ok {
+			fmt.Println("ERROR NAME - ", saveIngredient)
+			panic("ERROR NAME")
+		}
+		for i := 0; i < int(saveIngredient.Count); i++ {
+			ingredients = append(ingredients, domain.InventoryCell{
+				Ingredient: ing,
+				CellNumber: i,
+			})
+		}
+	}
+	return ingredients
+}
+
 func toLower(s string) string {
 	r := strings.ReplaceAll(s, " ", "")
 	r = strings.ReplaceAll(r, "'", "")

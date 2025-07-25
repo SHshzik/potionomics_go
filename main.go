@@ -61,6 +61,7 @@ func main() {
 		v1Ground.Get("/get_potions", myServer.GetPotions)
 		v1Ground.Get("/get_cauldrons", myServer.GetCauldrons)
 		v1Ground.Get("/get_inventory", myServer.GetInventory)
+		v1Ground.Get("/get_shop", myServer.GetShop)
 		v1Ground.Post("/generate", myServer.Generate)
 	}
 

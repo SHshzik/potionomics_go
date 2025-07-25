@@ -18,6 +18,10 @@ export namespace domain {
       this.D = source["D"];
       this.E = source["E"];
     }
+
+    get title(): string {
+      return `${this.translit} (${this.name})`
+    }
   }
 
   export class BrewResult {

@@ -31,6 +31,10 @@ func (s *App) GetIngredientsInInventory() []domain.InventoryCell {
 	return GetIngredientsInInventory(s.bdIngredients)
 }
 
+func (s *App) GetIngredientsInShop() []domain.InventoryCell {
+	return GetIngredientsInShop(s.bdIngredients)
+}
+
 func (s *App) Generate(r domain.GenerateRequest) []domain.BrewResult {
 	s.ingredientsInInventory = s.GetIngredientsInInventory()
 

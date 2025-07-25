@@ -15,9 +15,8 @@ export function normalizeIngredients( input: { name: string }[] ): { name: strin
 export function normalizeInventory(input: domain.InventoryCell[]): { name: string, count: number }[] {
   const map = new Map<string, number>();
 
-  input.forEach(({ ingredient: { name, translit } }) => {
-    const fullName = `${name} - ${translit}`
-    map.set(fullName, (map.get(fullName) || 0) + 1);
+  input.forEach(({ ingredient }) => {
+    map.set(ingredient.title, (map.get(ingredient.title) || 0) + 1);
   });
 
   return Array.from(map.entries()).map(([name, count]) => ({ name, count }));
