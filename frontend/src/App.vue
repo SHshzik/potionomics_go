@@ -2,8 +2,8 @@
   import { ref, onMounted } from 'vue';
   import SelectInput from './components/SelectInput.vue';
   import RecipeBlock from './components/ReceiptBlock.vue';
-  import { GetPotions, GetCauldrons, Generate } from '../wailsjs/go/service/App';
-  import { domain } from '../wailsjs/go/models';
+  import { GetPotions, GetCauldrons, Generate } from './client/app';
+  import { domain } from './models';
 
   const potions = ref<domain.Potion[]>([]);
   const cauldrons = ref<domain.Cauldron[]>([]);
@@ -24,11 +24,8 @@
     if (!selectedPotion.value || !selectedCauldron.value) {
       return;
     }
-    let request = new domain.GenerateRequest();
-    request.Potion = selectedPotion.value;
-    request.Cauldron = selectedCauldron.value;
 
-    Generate(request).then((result: domain.BrewResult[]) => {
+    Generate(selectedPotion.value.id, selectedCauldron.value.id).then((result: domain.BrewResult[]) => {
       receipts.value = result;
     });
   }

@@ -16,6 +16,7 @@ import (
 	"github.com/SHshzik/potionomics_go/pkg/logger"
 	"github.com/SHshzik/potionomics_go/service"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 //go:embed all:data
@@ -52,6 +53,7 @@ func main() {
 	server := httpserver.New(httpserver.Port("8080"))
 
 	{
+		server.App.Use(cors.New())
 		server.App.Get("/healthz", func(ctx *fiber.Ctx) error { return ctx.SendStatus(http.StatusOK) })
 	}
 

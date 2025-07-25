@@ -21,11 +21,13 @@ type Ingredient struct {
 }
 
 type Potion struct {
+	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Proportions []int  `json:"proportions"`
 }
 
 type Cauldron struct {
+	ID       string `json:"id"`
 	Name     string `json:"name"`
 	Capacity int    `json:"capacity"`
 	Magmin   int    `json:"magmin"`
