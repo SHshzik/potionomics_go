@@ -8,8 +8,10 @@ import (
 )
 
 type generateForm struct {
-	PotionID   int `json:"potion_id"`
-	CauldronID int `json:"cauldron_id"`
+	PotionID   int  `json:"potion_id"`
+	CauldronID int  `json:"cauldron_id"`
+	WithShop   bool `json:"with_shop"`
+	IsStrict   bool `json:"is_strict"`
 }
 
 func (s *HTTPServer) Generate(c *fiber.Ctx) error {
@@ -44,5 +46,7 @@ func (s *HTTPServer) Generate(c *fiber.Ctx) error {
 	return c.JSON(s.app.Generate(domain.GenerateRequest{
 		Potion:   potion,
 		Cauldron: cauldron,
+		WithShop: formGenerate.WithShop,
+		WithOpt:  formGenerate.IsStrict,
 	}))
 }

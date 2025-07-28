@@ -19,11 +19,11 @@ export async function GetShop(): Promise<domain.InventoryCell[]> {
   });
 }
 
-export async function Generate(potionId: number, cauldronId: number): Promise<domain.BrewResult[]> {
+export async function Generate(potionId: number, cauldronId: number, withShop: boolean, isStrict: boolean): Promise<domain.BrewResult[]> {
   const res = await fetch(`${BASE_URL}/generate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ potion_id: potionId, cauldron_id: cauldronId })
+    body: JSON.stringify({ potion_id: potionId, cauldron_id: cauldronId, with_shop: withShop, is_strict: isStrict })
   });
   if (!res.ok) throw new Error('Ошибка при генерации рецепта');
   const data = await res.json();

@@ -27,4 +27,6 @@ type Ingredient struct {
 type GenerateRequest struct {
 	Potion   Potion
 	Cauldron Cauldron
+	WithShop bool
+	WithOpt  bool
 }

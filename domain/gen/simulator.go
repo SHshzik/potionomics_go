@@ -2,7 +2,6 @@ package gen
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/SHshzik/potionomics_go/domain"
 	"github.com/tomcraven/goga"
@@ -75,14 +74,10 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 func (bs *BrewSimulator) ExitFunc(g goga.Genome) bool {
 	select {
 	case <-bs.Ctx.Done():
-		fmt.Println("Работа отменена:", bs.Ctx.Err())
 		close(bs.ResultChannel)
 		return true
 	default:
-		if g.GetFitness() > bs.MinFitness {
-			close(bs.ResultChannel)
-		}
-		return g.GetFitness() > bs.MinFitness
+		return false
 	}
 }
 

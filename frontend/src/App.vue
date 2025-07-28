@@ -11,6 +11,8 @@
 
   const selectedPotion = ref<potions.Potion>();
   const selectedCauldron = ref<cauldrons.Cauldron>();
+  const withShop = ref<boolean>();
+  const isStrict = ref<boolean>();
 
   const receipts = ref<domain.BrewResult[]>([]);
   const inventory = ref<{ name: string, count: number }[]>([]);
@@ -21,7 +23,7 @@
       return;
     }
 
-    Generate(selectedPotion.value.id, selectedCauldron.value.id).then((result: domain.BrewResult[]) => {
+    Generate(selectedPotion.value.id, selectedCauldron.value.id, !!withShop.value, !!isStrict.value).then((result: domain.BrewResult[]) => {
       receipts.value = result;
     });
   }
@@ -47,6 +49,17 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <PotionSelect v-model="selectedPotion" />
         <CauldronSelect v-model="selectedCauldron" />
+
+        <div class="flex items-center space-x-4">
+          <label class="inline-flex items-center">
+            <input type="checkbox" v-model="withShop" class="form-checkbox text-indigo-600 rounded" />
+            <span class="ml-2">с магазином</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input type="checkbox" v-model="isStrict" class="form-checkbox text-indigo-600 rounded" />
+            <span class="ml-2">Строго</span>
+          </label>
+        </div>
       </div>
 
       <button
