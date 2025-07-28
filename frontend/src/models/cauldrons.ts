@@ -20,7 +20,7 @@ export namespace cauldrons {
     }
 
     get title(): string {
-      return `${this.translit} (${this.name})`
+      return `${this.translit} (${this.name}) - ${this.capacity} - ${this.magmin}`
     }
   }
 }
