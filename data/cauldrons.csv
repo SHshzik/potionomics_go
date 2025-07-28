@@ -1,8 +1,8 @@
 Name,Base Ingredients,Base Magmin,Upg1 Ingredients,Upg1 Magimin,Upg2 Ingredients,Upg2 Magimin,Zone,Material 1,Material 2,Перевод
 Wooden,4,75,,,,,,,,Деревянный
 Clay,6,115,,,,,,,,Глинянный
-Mudpack,6,160,6,180,7,225,Mushroom Mire,Ghostlight Bloom,Bog Beet,
-Glass,7,140,7,170,8,200,Bone Wastes,Golem's-Eye Diamond,Sphinx Flea,
+Mudpack,6,160,6,180,7,225,Mushroom Mire,Ghostlight Bloom,Bog Beet,Грязевой
+Glass,7,140,7,170,8,200,Bone Wastes,Golem's-Eye Diamond,Sphinx Flea,Стеклянный
 Storm,7,240,8,295,9,375,Storm Plains,Fulgurite Ore,Static Spiderling,
 Ocean,8,240,8,275,8,320,Ocean Coasts,Abyssalite,Reef Radish,
 Shadow,7,255,7,295,7,345,Shadow Steppe,Shadowveil Pearl,Dropspider's Shadow,
