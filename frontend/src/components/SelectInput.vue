@@ -2,7 +2,7 @@
   const modelValue = defineModel<any>();
 
   defineProps<{
-    options: any[];
+    options: { id: number, title: string }[];
     label: string;
   }>();
 

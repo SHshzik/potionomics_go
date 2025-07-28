@@ -1,23 +1,22 @@
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue';
   import SelectInput from './components/SelectInput.vue';
+  import PotionSelect from './components/PotionSelect.vue';
   import RecipeBlock from './components/ReceiptBlock.vue';
-  import { GetPotions, GetCauldrons, Generate, GetInventory, GetShop } from './client/app';
+  import { GetCauldrons, Generate, GetInventory, GetShop } from './client/app';
   import { domain } from './models';
+  import { potions } from './models/potions';
   import { normalizeInventory } from './utils/normalizeIngredients'
 
-  const potions = ref<domain.Potion[]>([]);
+  const selectedPotion = ref<potions.Potion>();
+
   const cauldrons = ref<domain.Cauldron[]>([]);
-  const selectedPotion = ref<domain.Potion>();
   const selectedCauldron = ref<domain.Cauldron>();
   const receipts = ref<domain.BrewResult[]>([]);
   const inventory = ref<{ name: string, count: number }[]>([]);
   const shop = ref<{ name: string, count: number }[]>([]);
 
   onMounted(() => {
-    GetPotions().then((result: domain.Potion[]) => {
-      potions.value = result;
-    })
     GetCauldrons().then((result: domain.Cauldron[]) => {
       cauldrons.value = result;
     })
@@ -52,11 +51,7 @@
       <h1 class="text-3xl font-bold text-center">🧪 Potionomics Helper</h1>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <SelectInput
-          v-model="selectedPotion"
-          :options="potions"
-          label="Выберите зелье"
-        />
+        <PotionSelect v-model="selectedPotion" />
         <SelectInput
           v-model="selectedCauldron"
           :options="cauldrons"

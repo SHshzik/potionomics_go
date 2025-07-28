@@ -35,25 +35,6 @@ export namespace domain {
     }
   }
 
-  export class Potion {
-    id: string;
-    name: string;
-    proportions: number[];
-    translit: string;
-
-    constructor(source: any = {}) {
-      if (typeof source === 'string') source = JSON.parse(source);
-      this.id = source["id"];
-      this.name = source["name"];
-      this.proportions = source["proportions"] || [];
-      this.translit = source["translit"];
-    }
-
-    get title(): string {
-      return `${this.translit} (${this.name})`
-    }
-  }
-
   export class Cauldron {
 	  id: string;
     name: string;

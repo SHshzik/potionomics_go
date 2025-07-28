@@ -1,7 +1,8 @@
 package domain
 
+type ID int
+
 type (
-	BDPotions     map[string]Potion
 	BDIngredients map[string]Ingredient
 	BDCauldrons   map[string]Cauldron
 )
@@ -24,14 +25,6 @@ type Ingredient struct {
 	D        int
 	E        int
 	Translit string `json:"translit"`
-}
-
-type Potion struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Proportions []int  `json:"proportions"`
-	Translit    string `json:"translit"`
-	Order       int    `json:"order"`
 }
 
 type Cauldron struct {
