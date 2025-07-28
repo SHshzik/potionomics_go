@@ -11,8 +11,9 @@
 
   const selectedPotion = ref<potions.Potion>();
   const selectedCauldron = ref<cauldrons.Cauldron>();
-  const withShop = ref<boolean>();
-  const isStrict = ref<boolean>();
+  const withShop = ref<boolean>(false);
+  const isStrict = ref<boolean>(false);
+  const load = ref<boolean>(false);
 
   const receipts = ref<domain.BrewResult[]>([]);
   const inventory = ref<{ name: string, count: number }[]>([]);
@@ -23,7 +24,11 @@
       return;
     }
 
-    Generate(selectedPotion.value.id, selectedCauldron.value.id, !!withShop.value, !!isStrict.value).then((result: domain.BrewResult[]) => {
+    load.value = true
+    receipts.value = []
+
+    Generate(selectedPotion.value.id, selectedCauldron.value.id, withShop.value, isStrict.value).then((result: domain.BrewResult[]) => {
+      load.value = false
       receipts.value = result;
     });
   }
@@ -68,6 +73,13 @@
       >
         Собрать рецепт
       </button>
+
+      <div v-if="load" class="flex justify-center mt-6">
+        <svg class="animate-spin h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 000 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z" />
+        </svg>
+      </div>
 
       <div v-if="receipts.length" class="grid gap-4 pt-6">
         <RecipeBlock
