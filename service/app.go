@@ -36,6 +36,13 @@ func (s *App) GetIngredientsInShop() []domain.InventoryCell {
 
 func (s *App) Generate(r domain.GenerateRequest) []domain.BrewResult {
 	s.ingredientsInInventory = s.GetIngredientsInInventory()
+	if r.WithShop {
+		s.ingredientsInInventory = WithShop(s.ingredientsInInventory, s.GetIngredientsInShop())
+	}
+	if r.IsStrict {
+		s.ingredientsInInventory = Optimizate(s.ingredientsInInventory, r.Potion)
+	}
+	UpdateCellNumber(s.ingredientsInInventory)
 
 	resultChannel := make(chan []domain.Ingredient, 10)
 

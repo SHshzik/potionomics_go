@@ -47,6 +47,6 @@ func (s *HTTPServer) Generate(c *fiber.Ctx) error {
 		Potion:   potion,
 		Cauldron: cauldron,
 		WithShop: formGenerate.WithShop,
-		WithOpt:  formGenerate.IsStrict,
+		IsStrict: formGenerate.IsStrict,
 	}))
 }

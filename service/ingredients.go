@@ -20,6 +20,26 @@ func GetBDIngredients(ingredientsRecords [][]string) domain.BDIngredients {
 		c, _ := strconv.Atoi(ingredientRecord[3])
 		d, _ := strconv.Atoi(ingredientRecord[4])
 		e, _ := strconv.Atoi(ingredientRecord[5])
+		perfectForHealtPotion, _ := strconv.ParseBool(ingredientRecord[22])
+		perfectForManaPotion, _ := strconv.ParseBool(ingredientRecord[23])
+		perfectForStaminaPotion, _ := strconv.ParseBool(ingredientRecord[24])
+		perfectForSpeedPotion, _ := strconv.ParseBool(ingredientRecord[25])
+		perfectForTolerancePotion, _ := strconv.ParseBool(ingredientRecord[26])
+		perfectForFireTonic, _ := strconv.ParseBool(ingredientRecord[27])
+		perfectForIceTonic, _ := strconv.ParseBool(ingredientRecord[28])
+		perfectForThunderTonic, _ := strconv.ParseBool(ingredientRecord[29])
+		perfectForShadowTonic, _ := strconv.ParseBool(ingredientRecord[30])
+		perfectForRadiationTonic, _ := strconv.ParseBool(ingredientRecord[31])
+		perfectForSightEnhancer, _ := strconv.ParseBool(ingredientRecord[32])
+		perfectForAlertnessEnhancer, _ := strconv.ParseBool(ingredientRecord[33])
+		perfectForInsightEnhancer, _ := strconv.ParseBool(ingredientRecord[34])
+		perfectForDowsingEnhancer, _ := strconv.ParseBool(ingredientRecord[35])
+		perfectForSeekingEnhancer, _ := strconv.ParseBool(ingredientRecord[36])
+		perfectForPoisonCure, _ := strconv.ParseBool(ingredientRecord[37])
+		perfectForDrowsinessCure, _ := strconv.ParseBool(ingredientRecord[38])
+		perfectForPetrificationCure, _ := strconv.ParseBool(ingredientRecord[39])
+		perfectForSilenceCure, _ := strconv.ParseBool(ingredientRecord[40])
+		perfectForCurseCure, _ := strconv.ParseBool(ingredientRecord[41])
 
 		allIngredients[name] = domain.Ingredient{
 			Name:     baseName,
@@ -29,6 +49,27 @@ func GetBDIngredients(ingredientsRecords [][]string) domain.BDIngredients {
 			C:        c,
 			D:        d,
 			E:        e,
+
+			PerfectForHealtPotion:       perfectForHealtPotion,
+			PerfectForManaPotion:        perfectForManaPotion,
+			PerfectForStaminaPotion:     perfectForStaminaPotion,
+			PerfectForSpeedPotion:       perfectForSpeedPotion,
+			PerfectForTolerancePotion:   perfectForTolerancePotion,
+			PerfectForFireTonic:         perfectForFireTonic,
+			PerfectForIceTonic:          perfectForIceTonic,
+			PerfectForThunderTonic:      perfectForThunderTonic,
+			PerfectForShadowTonic:       perfectForShadowTonic,
+			PerfectForRadiationTonic:    perfectForRadiationTonic,
+			PerfectForSightEnhancer:     perfectForSightEnhancer,
+			PerfectForAlertnessEnhancer: perfectForAlertnessEnhancer,
+			PerfectForInsightEnhancer:   perfectForInsightEnhancer,
+			PerfectForDowsingEnhancer:   perfectForDowsingEnhancer,
+			PerfectForSeekingEnhancer:   perfectForSeekingEnhancer,
+			PerfectForPoisonCure:        perfectForPoisonCure,
+			PerfectForDrowsinessCure:    perfectForDrowsinessCure,
+			PerfectForPetrificationCure: perfectForPetrificationCure,
+			PerfectForSilenceCure:       perfectForSilenceCure,
+			PerfectForCurseCure:         perfectForCurseCure,
 		}
 	}
 
@@ -95,4 +136,25 @@ func toLower(s string) string {
 	r = strings.ReplaceAll(r, "-", "")
 	r = strings.ToLower(r)
 	return r
+}
+
+func Optimizate(ingredients []domain.InventoryCell, potion domain.Potion) []domain.InventoryCell {
+	result := make([]domain.InventoryCell, 0, len(ingredients))
+	for _, ing := range ingredients {
+		if ing.Ingredient.PerfectForPotion(potion) {
+			result = append(result, ing)
+		}
+	}
+
+	return result
+}
+
+func WithShop(inv, shop []domain.InventoryCell) []domain.InventoryCell {
+	return append(inv, shop...)
+}
+
+func UpdateCellNumber(inv []domain.InventoryCell) {
+	for i, ing := range inv {
+		ing.CellNumber = i
+	}
 }
