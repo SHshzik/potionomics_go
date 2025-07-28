@@ -4,14 +4,13 @@ import (
 	"strconv"
 
 	"github.com/SHshzik/potionomics_go/domain"
-	"github.com/google/uuid"
 )
 
 func GetBDCauldrons(cauldronsRecords [][]string) domain.BDCauldrons {
 	allCauldrons := make(domain.BDCauldrons, len(cauldronsRecords))
 
 	for i, cauldronsRecord := range cauldronsRecords[1:] {
-		id := uuid.New().String()
+		id := domain.ID(i)
 		capacity, _ := strconv.Atoi(cauldronsRecord[1])
 		magmin, _ := strconv.Atoi(cauldronsRecord[2])
 		allCauldrons[id] = domain.Cauldron{
@@ -20,7 +19,6 @@ func GetBDCauldrons(cauldronsRecords [][]string) domain.BDCauldrons {
 			Capacity: capacity,
 			Magmin:   magmin,
 			Translit: cauldronsRecord[10],
-			Order:    i,
 		}
 	}
 

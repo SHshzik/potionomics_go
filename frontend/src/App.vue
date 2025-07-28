@@ -1,26 +1,20 @@
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue';
-  import SelectInput from './components/SelectInput.vue';
   import PotionSelect from './components/PotionSelect.vue';
+  import CauldronSelect from './components/CauldronSelect.vue';
   import RecipeBlock from './components/ReceiptBlock.vue';
-  import { GetCauldrons, Generate, GetInventory, GetShop } from './client/app';
+  import { Generate, GetInventory, GetShop } from './client/app';
   import { domain } from './models';
   import { potions } from './models/potions';
+  import { cauldrons } from './models/cauldrons';
   import { normalizeInventory } from './utils/normalizeIngredients'
 
   const selectedPotion = ref<potions.Potion>();
+  const selectedCauldron = ref<cauldrons.Cauldron>();
 
-  const cauldrons = ref<domain.Cauldron[]>([]);
-  const selectedCauldron = ref<domain.Cauldron>();
   const receipts = ref<domain.BrewResult[]>([]);
   const inventory = ref<{ name: string, count: number }[]>([]);
   const shop = ref<{ name: string, count: number }[]>([]);
-
-  onMounted(() => {
-    GetCauldrons().then((result: domain.Cauldron[]) => {
-      cauldrons.value = result;
-    })
-  });
 
   function handleBrew() {
     if (!selectedPotion.value || !selectedCauldron.value) {
@@ -52,15 +46,8 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <PotionSelect v-model="selectedPotion" />
-        <SelectInput
-          v-model="selectedCauldron"
-          :options="cauldrons"
-          label="Выберите котёл"
-        />
+        <CauldronSelect v-model="selectedCauldron" />
       </div>
-
-      <p>{{ selectedPotion }}</p>
-      <p>{{ selectedCauldron }}</p>
 
       <button
         @click="handleBrew"

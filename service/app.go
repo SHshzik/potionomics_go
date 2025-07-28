@@ -127,24 +127,10 @@ func (s *App) GetCauldron(id string) (domain.Cauldron, error) {
 	return cauldron, nil
 }
 
-func (s *App) GetPotions() []domain.Potion {
-	potions := make([]domain.Potion, 0, len(s.bdPotions))
-	for _, potion := range s.bdPotions {
-		potions = append(potions, potion)
-	}
-	sort.Slice(potions, func(i, j int) bool {
-		return potions[i].Order < potions[j].Order
-	})
-	return potions
+func (s *App) GetPotions() domain.BDPotions {
+	return s.bdPotions
 }
 
-func (s *App) GetCauldrons() []domain.Cauldron {
-	cauldrons := make([]domain.Cauldron, 0, len(s.bdCauldrons))
-	for _, cauldron := range s.bdCauldrons {
-		cauldrons = append(cauldrons, cauldron)
-	}
-	sort.Slice(cauldrons, func(i, j int) bool {
-		return cauldrons[i].Order < cauldrons[j].Order
-	})
-	return cauldrons
+func (s *App) GetCauldrons() domain.BDCauldrons {
+	return s.bdCauldrons
 }

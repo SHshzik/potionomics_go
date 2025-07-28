@@ -1,13 +1,6 @@
 import { BASE_URL } from '../config';
 import { domain } from '../models';
 
-export async function GetCauldrons(): Promise<domain.Cauldron[]> {
-  const res = await fetch(`${BASE_URL}/get_cauldrons`);
-  if (!res.ok) throw new Error('Ошибка при получении котлов');
-  const data = await res.json();
-  return data.map((item: any) => new domain.Cauldron(item));
-}
-
 export async function GetInventory(): Promise<domain.InventoryCell[]> {
   const res = await fetch(`${BASE_URL}/get_inventory`);
   if (!res.ok) throw new Error('Ошибка при получении инвентаря');
@@ -26,7 +19,7 @@ export async function GetShop(): Promise<domain.InventoryCell[]> {
   });
 }
 
-export async function Generate(potionId: number, cauldronId: string): Promise<domain.BrewResult[]> {
+export async function Generate(potionId: number, cauldronId: number): Promise<domain.BrewResult[]> {
   const res = await fetch(`${BASE_URL}/generate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

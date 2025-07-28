@@ -2,10 +2,7 @@ package domain
 
 type ID int
 
-type (
-	BDIngredients map[string]Ingredient
-	BDCauldrons   map[string]Cauldron
-)
+type BDIngredients map[string]Ingredient
 
 type BrewResult struct {
 	ID      string `json:"id"`
@@ -25,15 +22,6 @@ type Ingredient struct {
 	D        int
 	E        int
 	Translit string `json:"translit"`
-}
-
-type Cauldron struct {
-	ID       string `json:"id"`
-	Name     string `json:"name"`
-	Capacity int    `json:"capacity"`
-	Magmin   int    `json:"magmin"`
-	Translit string `json:"translit"`
-	Order    int    `json:"order"`
 }
 
 type GenerateRequest struct {
