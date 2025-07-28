@@ -2,7 +2,11 @@ package service
 
 import (
 	"context"
+	"crypto/sha1"
+	"encoding/hex"
 	"errors"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/SHshzik/potionomics_go/domain"
@@ -103,15 +107,26 @@ func (s *App) Generate(r domain.GenerateRequest) []domain.BrewResult {
 	}()
 
 	top := make([]domain.BrewResult, 0, 10)
+	seen := make(map[string]bool)
 
 	for r := range resultChannel {
+		key := recipeKey(r)
+
+		if seen[key] {
+			continue // дубликат — пропускаем
+		}
+
 		if len(top) > 10 {
+			oldKey := recipeKey(top[0].Receipt)
+			delete(seen, oldKey)
+
 			top = top[1:]
 		}
 		top = append(top, domain.BrewResult{
 			ID:      uuid.New().String(),
 			Receipt: r,
 		})
+		seen[key] = true
 	}
 
 	return top
@@ -139,4 +154,16 @@ func (s *App) GetPotions() domain.BDPotions {
 
 func (s *App) GetCauldrons() domain.BDCauldrons {
 	return s.bdCauldrons
+}
+
+func recipeKey(ingredients []domain.Ingredient) string {
+	names := make([]string, len(ingredients))
+	for i, ing := range ingredients {
+		names[i] = ing.Name
+	}
+	sort.Strings(names) // чтобы не зависело от порядка
+	joined := strings.Join(names, "|")
+
+	hash := sha1.Sum([]byte(joined))
+	return hex.EncodeToString(hash[:])
 }
