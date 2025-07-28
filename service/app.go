@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"errors"
-	"sort"
 	"time"
 
 	"github.com/SHshzik/potionomics_go/domain"
@@ -40,7 +39,7 @@ func (s *App) Generate(r domain.GenerateRequest) []domain.BrewResult {
 
 	resultChannel := make(chan []domain.Ingredient, 10)
 
-	maxA, maxB, maxC, maxD, maxE := gen.CalculateMaxValues(r.Cauldron.Magmin, r.Potion.Proportions)
+	maxA, maxB, maxC, maxD, maxE := gen.CalculateMaxValues(r.Cauldron.Magmin, r.Potion.Balance)
 	minFitness := r.Cauldron.Magmin * 75 / 100
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -49,7 +48,7 @@ func (s *App) Generate(r domain.GenerateRequest) []domain.BrewResult {
 	simulator := &gen.BrewSimulator{
 		IngredientsInInventory: s.ingredientsInInventory,
 		Capacity:               r.Cauldron.Capacity,
-		Proportions:            r.Potion.Proportions,
+		Proportions:            r.Potion.Balance,
 		ResultChannel:          resultChannel,
 		MaxA:                   maxA,
 		MaxB:                   maxB,
@@ -111,7 +110,7 @@ func (s *App) Generate(r domain.GenerateRequest) []domain.BrewResult {
 	return top
 }
 
-func (s *App) GetPotion(id string) (domain.Potion, error) {
+func (s *App) GetPotion(id domain.ID) (domain.Potion, error) {
 	potion, ok := s.bdPotions[id]
 	if !ok {
 		return domain.Potion{}, errors.New("potion not found")
@@ -119,7 +118,7 @@ func (s *App) GetPotion(id string) (domain.Potion, error) {
 	return potion, nil
 }
 
-func (s *App) GetCauldron(id string) (domain.Cauldron, error) {
+func (s *App) GetCauldron(id domain.ID) (domain.Cauldron, error) {
 	cauldron, ok := s.bdCauldrons[id]
 	if !ok {
 		return domain.Cauldron{}, errors.New("cauldron not found")

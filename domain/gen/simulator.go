@@ -49,7 +49,6 @@ func (bs *BrewSimulator) Simulate(g goga.Genome) {
 		maxA, maxB, maxC, maxD, maxE := CalculateMaxValues(weight, bs.Proportions)
 		if weight > 0 {
 			valueF := float64(value) * (1 - (float64(mixins) / float64(weight)))
-			fmt.Println(valueF)
 
 			if (bs.MaxA > 0 && a > maxA) ||
 				(bs.MaxB > 0 && b > maxB) ||

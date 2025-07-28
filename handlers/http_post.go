@@ -8,8 +8,8 @@ import (
 )
 
 type generateForm struct {
-	PotionID   string `json:"potion_id" validate:"required"`
-	CauldronID string `json:"cauldron_id" validate:"required"`
+	PotionID   int `json:"potion_id"`
+	CauldronID int `json:"cauldron_id"`
 }
 
 func (s *HTTPServer) Generate(c *fiber.Ctx) error {
@@ -29,13 +29,13 @@ func (s *HTTPServer) Generate(c *fiber.Ctx) error {
 		return errorResponse(c, http.StatusUnprocessableEntity, err.Error())
 	}
 
-	potion, err := s.app.GetPotion(formGenerate.PotionID)
+	potion, err := s.app.GetPotion(domain.ID(formGenerate.PotionID))
 	if err != nil {
 		s.l.Error(err, "http - generate - potion not found")
 		return errorResponse(c, http.StatusNotFound, "Potion not found")
 	}
 
-	cauldron, err := s.app.GetCauldron(formGenerate.CauldronID)
+	cauldron, err := s.app.GetCauldron(domain.ID(formGenerate.CauldronID))
 	if err != nil {
 		s.l.Error(err, "http - generate - cauldron not found")
 		return errorResponse(c, http.StatusNotFound, "Cauldron not found")
