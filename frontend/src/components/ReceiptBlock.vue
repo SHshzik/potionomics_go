@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { computed } from 'vue';
-  import { normalizeIngredients } from '../utils/normalizeIngredients';
   import { domain } from '../models/index';
   
 
@@ -28,6 +27,7 @@ const grouped = computed(() => {
         C: existing.C + ing.C,
         D: existing.D + ing.D,
         E: existing.E + ing.E,
+        basePrice: existing.basePrice + ing.basePrice,
         translit: ing.translit,
         count: existing.count + 1,
       });
@@ -38,6 +38,7 @@ const grouped = computed(() => {
   return Array.from(map.values()).map((ing) => ({
     ...ing,
     total: ing.A + ing.B + ing.C + ing.D + ing.E,
+    totalPrice: ing.basePrice,
   }));
 });
 
@@ -51,9 +52,10 @@ const totalEnergy = computed(() => {
       acc.D += cur.D;
       acc.E += cur.E;
       acc.total += cur.total;
+      acc.totalPrice += cur.totalPrice;
       return acc;
     },
-    { A: 0, B: 0, C: 0, D: 0, E: 0, total: 0 }
+    { A: 0, B: 0, C: 0, D: 0, E: 0, total: 0, totalPrice: 0 }
   );
 });
 </script>
@@ -71,7 +73,7 @@ const totalEnergy = computed(() => {
         <div class="flex justify-between font-medium">
           <span>{{ ing.translit }} ({{ ing.name }})</span>
           <span class="text-gray-500"
-            >×{{ ing.count }} — Σ: {{ ing.total }}</span
+            >×{{ ing.count }} — Σ: {{ ing.total }} - $: {{ ing.totalPrice }}</span
           >
         </div>
         <div class="text-xs text-gray-600 flex gap-2 mt-1 flex-wrap">
@@ -93,6 +95,7 @@ const totalEnergy = computed(() => {
         <span>D: {{ totalEnergy.D }}</span>
         <span>E: {{ totalEnergy.E }}</span>
         <span class="font-bold text-gray-800">Σ: {{ totalEnergy.total }}</span>
+        <span class="font-bold text-gray-800">$: {{ totalEnergy.totalPrice }}</span>
       </div>
     </div>
   </div>

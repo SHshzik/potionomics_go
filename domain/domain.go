@@ -21,6 +21,7 @@ type Ingredient struct {
 	C                           int
 	D                           int
 	E                           int
+	BasePrice                   int `json:"base_price"`
 	PerfectForHealtPotion       bool
 	PerfectForManaPotion        bool
 	PerfectForStaminaPotion     bool

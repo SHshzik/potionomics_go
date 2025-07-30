@@ -65,11 +65,15 @@ func main() {
 		v1Ground.Post("/generate", myServer.Generate)
 	}
 
+	{
+		server.App.Static("/", "./")
+	}
+
 	server.Start()
 
 	// Waiting signal
 	interrupt := make(chan os.Signal, 1)
-	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM, syscall.SIGINT, syscall.SIGHUP, syscall.SIGQUIT)
 
 	select {
 	case s := <-interrupt:

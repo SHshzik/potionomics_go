@@ -20,6 +20,7 @@ func GetBDIngredients(ingredientsRecords [][]string) domain.BDIngredients {
 		c, _ := strconv.Atoi(ingredientRecord[3])
 		d, _ := strconv.Atoi(ingredientRecord[4])
 		e, _ := strconv.Atoi(ingredientRecord[5])
+		basePrice, _ := strconv.Atoi(ingredientRecord[9])
 		perfectForHealtPotion, _ := strconv.ParseBool(ingredientRecord[22])
 		perfectForManaPotion, _ := strconv.ParseBool(ingredientRecord[23])
 		perfectForStaminaPotion, _ := strconv.ParseBool(ingredientRecord[24])
@@ -42,13 +43,14 @@ func GetBDIngredients(ingredientsRecords [][]string) domain.BDIngredients {
 		perfectForCurseCure, _ := strconv.ParseBool(ingredientRecord[41])
 
 		allIngredients[name] = domain.Ingredient{
-			Name:     baseName,
-			Translit: ingredientRecord[42],
-			A:        a,
-			B:        b,
-			C:        c,
-			D:        d,
-			E:        e,
+			Name:      baseName,
+			Translit:  ingredientRecord[42],
+			A:         a,
+			B:         b,
+			C:         c,
+			D:         d,
+			E:         e,
+			BasePrice: basePrice,
 
 			PerfectForHealtPotion:       perfectForHealtPotion,
 			PerfectForManaPotion:        perfectForManaPotion,

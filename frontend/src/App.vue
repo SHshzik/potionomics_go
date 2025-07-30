@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { ref, onMounted } from 'vue';
+  import { ref } from 'vue';
   import PotionSelect from './components/PotionSelect.vue';
   import CauldronSelect from './components/CauldronSelect.vue';
   import RecipeBlock from './components/ReceiptBlock.vue';

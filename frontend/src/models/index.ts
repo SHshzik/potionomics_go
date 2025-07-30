@@ -7,6 +7,7 @@ export namespace domain {
     C: number;
     D: number;
     E: number;
+    basePrice: number;
 
     constructor(source: any = {}) {
       if (typeof source === 'string') source = JSON.parse(source);
@@ -17,6 +18,7 @@ export namespace domain {
       this.C = source["C"];
       this.D = source["D"];
       this.E = source["E"];
+      this.basePrice = source["base_price"];
     }
 
     get title(): string {
